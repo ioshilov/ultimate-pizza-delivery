@@ -13,7 +13,6 @@ public class Toppings {
    private String Name;
    private BigDecimal Price;
 
-   private Boolean active;
 
     public Toppings(String name, BigDecimal price) {
         Name = name;

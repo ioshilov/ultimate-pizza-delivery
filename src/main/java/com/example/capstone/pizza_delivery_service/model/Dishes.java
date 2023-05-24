@@ -1,20 +1,56 @@
 package com.example.capstone.pizza_delivery_service.model;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
 public class Dishes {
 
 //    private Integer ID;
-    private Integer FOODTYPEID;
-    private Boolean jalapeno;
-    private Boolean pepper;
-    private Boolean cheese;
+    private FoodTypes foodType;
+   private List<Toppings> toppings;
+   private BigDecimal sum;
 
-    public Dishes(Integer FOODTYPEID, boolean jalapeno, boolean pepper, boolean cheese) {
-        this.FOODTYPEID = FOODTYPEID;
-        this.jalapeno = jalapeno;
-        this.pepper = pepper;
-        this.cheese = cheese;
+   private String description;
+
+    public Dishes(FoodTypes foodType) {
+        this.foodType = foodType;
+        updateSum();
+        setDescription(toString());
+    }
+
+    public void setToppings(List<Toppings> toppings) {
+        this.toppings = toppings;
+        updateSum();
+        setDescription(toString());
+    }
+
+    public String toString (){
+        if (toppings==null) {return foodType.getName();}
+        if (toppings.isEmpty()) {return foodType.getName();}
+        return foodType.getName()+"     toppings: "+toppings.stream().map(Toppings::getName).collect(Collectors.joining(","));
+}
+
+    public void updateSum(){
+        BigDecimal foodTypePrice=foodType.getPrice();
+
+        if (toppings!=null){
+            BigDecimal sumToppings =toppings.stream().map(Toppings::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal result=foodTypePrice.add(sumToppings);
+            setSum(result);
+            }else
+            {setSum(foodTypePrice);}
+    }
+
+    private void setSum(BigDecimal sum) {
+        this.sum = sum;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

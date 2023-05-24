@@ -15,7 +15,7 @@ public class FoodTypesEntity {
     @Id
     @Column(name="FOODTYPEID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer foodTypeID;
+    private Integer foodTypesID;
 
     @NotNull
     @Column(name="NAME")

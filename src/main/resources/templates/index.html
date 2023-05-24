@@ -1,72 +1,57 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout"lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" lang="en">
 <head>
     <title>Home</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="jumbotron main-content">
-        <h1>Welcome to Pizza delivery service</h1>
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4">Welcome to Pizza delivery service</h1>
         <p> Service description</p>
     </div>
-    <div class="container">
-        <form action="#" th:action="@{/showordercart}" method="get" >
-            <input type="submit" value="show cart">
-        </form>
 
-        <table class="fixed" border="2" width="1050" height="200" align="center" >
-            <col width="350px" />
-            <col width="350px" />
-            <col width="350px" />
-            <tr style="height=100px">
-                <td>
-                    <form action="#" th:action="@{/addtocart/1}" method="post" >
-                        <table class="fixed" >
+
+    <div class="container">
+        <div class="row" style="background:#adb5bd;" >
+            <div class="container" align="center">
+                <form action="#" th:action="@{/showordercart}" method="get">
+                    <input class="btn btn-primary" type="submit" value="Order">
+                </form>
+                <br>
+                <br>
+            </div>
+            <tr th:each="foodtype : ${foodtypes}">
+                <div align="center" class="col-6 col-sm-4">
+                    <form action="#" th:action="@{/addtocart/}+${foodtype.foodTypesID}" method="post">
+                        <table>
                             <tr>
-                                <td class="fixed" width="200px" >
-                                    <h1 th:text="${title_1}" align="center"/>
-                                    <p th:text="${description_1}" align="center" />
+                                <td style="width: 200px">
+                                    <h3 th:text="${foodtype.name}" align="center"/>
+                                    <p th:text="${foodtype.price}+' tg.'" align="center"/>
+                                    <p th:text="${foodtype.description}" align="center"/>
                                 </td>
-                                <td class="fixed" width="150px">
-<!--                                    <input id="JALAPENO" type="checkbox" name="JALAPENO" th:checked="${JALAPENO}"/>-->
-<!--                                    <label for="JALAPENO">Add Jalapeno</label>-->
-<!--                                    <br>-->
-<!--                                    <input id="pepper" type="checkbox" name="PEPPER" th:checked="${PEPPER}"/>-->
-<!--                                    <label for="pepper">Add Pepper</label>-->
-<!--                                    <br>-->
-<!--                                    <input id="cheese" type="checkbox" name="CHEESE" th:checked="${CHEESE}"/>-->
-<!--                                    <label for="cheese">Add Cheese</label>-->
-<!--                                    <br>-->
-                                    <ul>
-                                        <li th:each="toppings : ${toppingslist}">
-                                            <label th:for="${toppings.name}" th:text="${toppings.name}">topping name</label>
-                                            <input type="checkbox"
-                                                   th:name="${toppings.name}" th:checked="false"/>
-                                        </li>
-                                    </ul>
-                                    <input type="submit" value="Add to cart">
+                                <td style="width: 200px">
+
+                                    <li th:each="toppings : ${toppingslist}">
+                                        <label th:for="${toppings.name}" th:text="${toppings.name}">topping name</label>
+                                        <input type="checkbox"
+                                               th:name="topping" th:checked="false" th:value="${toppings.name}"/>
+                                        <br>
+                                    </li>
+                                    <input class="btn btn-primary btn-sm" type="submit" value="Add to cart">
                                 </td>
                             </tr>
                         </table>
 
                     </form>
-                </td>
-                <td></td>
-                <td></td>
+                </div>
+
             </tr>
-            <tr style="height=100px">
-                <td>
-                    <form>
-                        <input id="jalapeno2" type="checkbox">
-                        <label for="jalapeno">Добавить Jalapeno</label>
-                    </form>
-                </td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+        </div>
     </div>
+
 </div>
 
 </body>
