@@ -11,10 +11,61 @@
         <p> Service description</p>
     </div>
     <div class="container">
-        <h3>What do you want to do?</h3>
-        <ul>
-            <li><a th:href="@{/customers}">View Customers</a></li>
-        </ul>
+        <form action="#" th:action="@{/showordercart}" method="get" >
+            <input type="submit" value="show cart">
+        </form>
+
+        <table class="fixed" border="2" width="1050" height="200" align="center" >
+            <col width="350px" />
+            <col width="350px" />
+            <col width="350px" />
+            <tr style="height=100px">
+                <td>
+                    <form action="#" th:action="@{/addtocart/1}" method="post" >
+                        <table class="fixed" >
+                            <tr>
+                                <td class="fixed" width="200px" >
+                                    <h1 th:text="${title_1}" align="center"/>
+                                    <p th:text="${description_1}" align="center" />
+                                </td>
+                                <td class="fixed" width="150px">
+<!--                                    <input id="JALAPENO" type="checkbox" name="JALAPENO" th:checked="${JALAPENO}"/>-->
+<!--                                    <label for="JALAPENO">Add Jalapeno</label>-->
+<!--                                    <br>-->
+<!--                                    <input id="pepper" type="checkbox" name="PEPPER" th:checked="${PEPPER}"/>-->
+<!--                                    <label for="pepper">Add Pepper</label>-->
+<!--                                    <br>-->
+<!--                                    <input id="cheese" type="checkbox" name="CHEESE" th:checked="${CHEESE}"/>-->
+<!--                                    <label for="cheese">Add Cheese</label>-->
+<!--                                    <br>-->
+                                    <ul>
+                                        <li th:each="toppings : ${toppingslist}">
+                                            <label th:for="${toppings.name}" th:text="${toppings.name}">topping name</label>
+                                            <input type="checkbox"
+                                                   th:name="${toppings.name}" th:checked="false"/>
+                                        </li>
+                                    </ul>
+                                    <input type="submit" value="Add to cart">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </form>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="height=100px">
+                <td>
+                    <form>
+                        <input id="jalapeno2" type="checkbox">
+                        <label for="jalapeno">Добавить Jalapeno</label>
+                    </form>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
     </div>
 </div>
 

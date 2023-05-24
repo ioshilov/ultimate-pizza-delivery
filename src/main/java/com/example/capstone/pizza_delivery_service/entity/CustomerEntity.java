@@ -1,16 +1,16 @@
-package com.example.capstone.pizza_deilevery_service.entity;
+package com.example.capstone.pizza_delivery_service.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+
 @Entity
+@Data
 @Table(name="customers")
 public class CustomerEntity {
 
@@ -32,4 +32,9 @@ public class CustomerEntity {
     @Column (name="HOMEADDRESS")
     private String homeAddress;
 
+    @OneToOne(mappedBy = "customerEntity", cascade =  CascadeType.ALL)
+    private CustomersCredentialsEntity CustomersCredentialsEntity;
+
+    public CustomerEntity() {
+    }
 }

@@ -1,7 +1,7 @@
-package com.example.capstone.pizza_deilevery_service.service;
+package com.example.capstone.pizza_delivery_service.service;
 
-import com.example.capstone.pizza_deilevery_service.model.Customer;
-import com.example.capstone.pizza_deilevery_service.repositories.CustomersRepository;
+import com.example.capstone.pizza_delivery_service.model.Customer;
+import com.example.capstone.pizza_delivery_service.repositories.CustomersRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +18,10 @@ public class CustomerService {
 
         return customersRepository.findAll().stream().map(x->new Customer(x.getId(),x.getName(),x.getSurname(),x.getMobile(),x.getDOB(),x.getEmail(),x.getHomeAddress())).collect(Collectors.toList());
     }
+
+    public Customer getCustomerCredentialsbyID(){
+        return customersRepository.findById(1).stream().map(x->new Customer(x.getId(),x.getName(),x.getSurname(),x.getMobile(),x.getDOB(),x.getEmail(),x.getHomeAddress())).limit(1).findFirst().get();
+
+    }
+
 }
