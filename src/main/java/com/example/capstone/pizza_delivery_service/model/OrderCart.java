@@ -27,5 +27,9 @@ public class OrderCart {
         dishesList.add(dishes);
     }
 
+    public void deleteDishes(int ID){
+        dishesList.remove(ID);
+    }
+
 
 }

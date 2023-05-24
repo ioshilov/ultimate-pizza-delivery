@@ -42,6 +42,10 @@ public class Controller {
     private OrderCart orderCart;
 
     @Autowired
+    private OrderData orderData;
+
+
+    @Autowired
     public Controller(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -53,6 +57,8 @@ public class Controller {
         List< FoodTypesEntity> foodTypesEntities =foodTypesRepository.findAll();
          model.addAttribute("foodtypes",foodTypesEntities);
         model.addAttribute("toppingslist",toppingsRepository.findAll().stream().map(x->new Toppings(x.getName(),x.getPrice())).toList());
+        model.addAttribute("dishes",orderCart.getDishesList());
+        model.addAttribute("orderData",orderData);
         return "index";
     }
     @GetMapping(value = "/customers")
@@ -60,6 +66,21 @@ public class Controller {
         List<Customer> customers= customerService.getAllCustomers();
         model.addAttribute("customers",customers);
     return "guests-view";
+    }
+
+    @GetMapping(value = "/delete/{ID}")
+    public String deleteFromCart (@PathVariable Integer ID){
+        logger.error("********************Delete ID "+ID);
+        orderCart.deleteDishes(ID);
+        logger.error(orderCart.toString());
+        return "redirect:/";
+    }
+
+    @PostMapping(value= "/pay")
+    public String addToCart ( @ModelAttribute(value = "orderData") OrderData orderData){
+        logger.error("*************Testing payment**************");
+        logger.error(orderData.toString());
+        return "redirect:/";
     }
 
 
