@@ -23,13 +23,16 @@ public class DishesEntity {
     @JoinColumn(name = "foodtypeid")
     private FoodTypesEntity foodTypesEntity;
 
-
     @ManyToMany
     @JoinTable(
             name = "toppings_dishes",
-            joinColumns = @JoinColumn(name = "toppingid"),
-            inverseJoinColumns = @JoinColumn(name = "dishid"))
+            joinColumns = @JoinColumn(name = "dishid"),
+            inverseJoinColumns = @JoinColumn(name = "toppingid"))
     List<ToppingsEntity> toppingsEntitySet=new ArrayList<>();
+
+
+    @ManyToMany(mappedBy = "dishesEntityList")
+    private List<OrderCartEntity> orderCartEntities=new ArrayList<>();
 
     public void addToppings (ToppingsEntity toppingsEntity){
         toppingsEntitySet.add(toppingsEntity);

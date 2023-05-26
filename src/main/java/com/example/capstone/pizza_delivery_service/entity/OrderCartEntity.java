@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,14 +18,23 @@ public class OrderCartEntity {
 
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderCartID;
 
 
-    @ManyToOne
-    private DishesEntity dishesEntity;
+    @ManyToMany
+    @JoinTable(
+            name = "ordercart_dishes",
+            joinColumns = @JoinColumn(name = "ordercartid"),
+            inverseJoinColumns = @JoinColumn(name = "dishid"))
+    private List<DishesEntity> dishesEntityList=new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+
+    @OneToOne(mappedBy = "orderCartEntity")
     private OrderDetailsEntity orderDetailsEntity;
+
+    public void addDishes(DishesEntity dishesEntity) {
+        dishesEntityList.add(dishesEntity);
+    }
 
 }

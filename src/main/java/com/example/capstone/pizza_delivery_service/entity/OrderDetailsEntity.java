@@ -20,6 +20,9 @@ public class OrderDetailsEntity {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer orderDetailsID;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ordercartid", referencedColumnName = "id")
+    private OrderCartEntity orderCartEntity;
 
     @Column(name="deliveryname")
         private String deliveryName;

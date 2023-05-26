@@ -65,33 +65,31 @@ public class CustomerService {
         Integer ordersEntityID = ordersEntity.getId();
         logger.info("ORDER ID =" + ordersEntityID.toString());
         logger.error("**********Service  Before Cart fill *****************");
-        fillOrderCartWithDishes(orderCart);
+        OrderCartEntity orderCartEntity= fillOrderCartWithDishesAndSave(orderCart);
 
-//        orderCart.getDishesList().forEach(x -> {
-//        });
-
-//
-//        OrderDetailsEntity orderDetailsEntity = new OrderDetailsEntity();
-//        orderDetailsEntity.setDeliveryName(orderDetails.getName());
-//        orderDetailsEntity.setDeliveryMobile(orderDetails.getMobile());
-//        orderDetailsEntity.setDeliveryPrice(BigDecimal.valueOf(1500));
-//        orderDetailsEntity.setDeliveryComments(orderDetails.getComments());
-
+        OrderDetailsEntity orderDetailsEntity = new OrderDetailsEntity();
+        orderDetailsEntity.setDeliveryName(orderDetails.getName());
+        orderDetailsEntity.setDeliveryMobile(orderDetails.getMobile());
+        orderDetailsEntity.setDeliveryPrice(BigDecimal.valueOf(1500));
+        orderDetailsEntity.setDeliveryAddress(orderDetails.getAddress());
+        orderDetailsEntity.setDeliveryComments(orderDetails.getComments());
+        orderDetailsEntity.setOrderCartEntity(orderCartEntity);
+        orderDetailsRepository.save(orderDetailsEntity);
+        logger.error("**********Service  VICTORY Order details saved *****************");
 
     }
 
-    public void fillOrderCartWithDishes(OrderCart orderCart) {
+    public OrderCartEntity fillOrderCartWithDishesAndSave(OrderCart orderCart) {
         logger.error("**********Service  Topping repo *****************");
         List<ToppingsEntity> toppingsEntityList = toppingsRepository.findAll();
         logger.error("**********Service  Dishes repo *****************");
-//        List<DishesEntity> dishesEntities = dishesRepository.findAll();
-//        List<Integer> dishesID = new ArrayList<>();
         logger.error("**********Service  STAGE  1 *****************");
-
+        OrderCartEntity orderCartEntity=new OrderCartEntity();
 
         for (var dish : orderCart.getDishesList()
         ) {
-            if (dish.getToppings() != null) {
+
+//            if (dish.getToppings() != null) {
                 logger.error("**********Service  STAGE  2 *****************");
                 DishesEntity dishesEntity=new DishesEntity();
                 String foodname=dish.getFoodType().getName();
@@ -112,11 +110,18 @@ public class CustomerService {
                 );
                 logger.error("**********Service  STAGE  4 *****************");
                  dishesRepository.save(dishesEntity);
-                logger.error("**********Service  VICTORY *****************");
-            }
+
+                logger.error("**********Service  STAGE  4 Dishes Saved *****************");
+                orderCartEntity.addDishes(dishesEntity);
+            logger.error("**********Service  STAGE  4 add dish " + dishesEntity + " to cart *****************");
+//            }
 
 
         }
+        orderCartRepository.save(orderCartEntity);
+        logger.error("**********Service  VICTORY *****************");
+        return orderCartEntity;
+
 
     }
 }
