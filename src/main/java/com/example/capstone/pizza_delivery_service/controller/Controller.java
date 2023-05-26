@@ -11,12 +11,11 @@ import com.example.capstone.pizza_delivery_service.repositories.CustomersReposit
 import com.example.capstone.pizza_delivery_service.repositories.FoodTypesRepository;
 import com.example.capstone.pizza_delivery_service.repositories.ToppingsRepository;
 import com.example.capstone.pizza_delivery_service.service.CustomerService;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class Controller {
     private OrderCart orderCart;
 
     @Autowired
-    private OrderData orderData;
+    private OrderDetails orderDetails;
 
 
     @Autowired
@@ -58,7 +57,9 @@ public class Controller {
          model.addAttribute("foodtypes",foodTypesEntities);
         model.addAttribute("toppingslist",toppingsRepository.findAll().stream().map(x->new Toppings(x.getName(),x.getPrice())).toList());
         model.addAttribute("dishes",orderCart.getDishesList());
-        model.addAttribute("orderData",orderData);
+        model.addAttribute("orderDetails", orderDetails);
+
+        logger.error("********************Your cart is full of " + orderCart.toString());
         return "index";
     }
     @GetMapping(value = "/customers")
@@ -77,9 +78,10 @@ public class Controller {
     }
 
     @PostMapping(value= "/pay")
-    public String addToCart ( @ModelAttribute(value = "orderData") OrderData orderData){
+    public String addToCart ( @ModelAttribute(value = "orderDetails") OrderDetails orderDetails){
         logger.error("*************Testing payment**************");
-        logger.error(orderData.toString());
+        logger.error(orderDetails.toString());
+        customerService.createOrder(orderCart,orderDetails);
         return "redirect:/";
     }
 
@@ -124,5 +126,13 @@ public class Controller {
         model.addAttribute("customerscredentials",customersCredentials);
 
         return "credentials-view";
+    }
+
+
+    @PostMapping("/invalidatesession")
+    public String destroySession(HttpServletRequest request) {
+        //invalidate the session , this will clear the data from configured database (Mysql/redis/hazelcast)
+        request.getSession().invalidate();
+        return "redirect:/";
     }
 }

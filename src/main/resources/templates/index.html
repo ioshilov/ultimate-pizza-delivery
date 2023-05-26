@@ -54,23 +54,32 @@
                                                 <input class="btn btn-danger btn-sm" type="submit" value="del">
                                             </form>
                                         </td>
-                                        </td></tr>
+                                        </td>   </tr>
                                     </tbody>
+
                                 </table>
-                                <form id="clientForm" action="#" th:action="@{/pay}" th:object="${orderData}"
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    Delivery cost = 1500 tg.
+                                </small>
+
+                                <form id="clientForm" action="#" th:action="@{/pay}" th:object="${orderDetails}"
                                       method="post">
 
                                     <div class="form-group">
                                         <label aling="left" for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" th:field="*{name}">
+                                        <input type="text" class="form-control input-sm" id="name" th:field="*{name}">
                                     </div>
                                     <div class="form-group">
                                         <label aling="left" for="mobile">Mobile</label>
-                                        <input type="tel" class="form-control" id="mobile" th:field="*{mobile}">
+                                        <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">
                                     </div>
                                     <div class="form-group">
                                         <label aling="left" for="address">Delivery address</label>
-                                        <input type="text" class="form-control" id="address" th:field="*{address}">
+                                        <input type="text" class="form-control input-sm" id="address" th:field="*{address}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label aling="left" for="address">Comments</label>
+                                        <input type="text" class="form-control input-sm" id="comments" th:field="*{comments}">
                                     </div>
 
                                 </form>
@@ -80,7 +89,7 @@
                             <div class="modal-footer">
                                 <div class="container" align="left">
                                     <td><b>Total: </b></td>
-                                    <td><b th:text="${#aggregates.sum(dishes.![sum])}"/></td>
+                                    <td><b th:text="${#aggregates.sum(dishes.![sum])}+1500"/></td>
                                     <td><b>tg. </b></td>
                                     <br>
                                 </div>
@@ -109,7 +118,7 @@
                     <div class="card" style="width: 18rem;">
                         <img class="card-img-top" src="..." alt="Card image cap">
                         <div class="card-body">
-                            <form action="#" th:action="@{/addtocart/}+${foodtype.foodTypesID}" method="post">
+                            <form action="#" th:action="@{/addtocart/}+${foodtype.id}" method="post">
                                 <table>
                                     <tr>
                                         <td style="width: 200px">

@@ -9,11 +9,11 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 @SessionScope
 @Data
-public class OrderData {
+public class OrderDetails {
 
     private String name;
     private String mobile;
     private String address;
-
+    private String comments;
 
 }

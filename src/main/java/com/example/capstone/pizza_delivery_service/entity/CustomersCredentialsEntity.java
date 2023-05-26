@@ -8,14 +8,14 @@ import lombok.Setter;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name="customerscredentials")
 public class CustomersCredentialsEntity {
 
     @Id
     @Column(name="CUSTOMERID")
     private Integer id;
-
     @Column (name="username")
     private String login;
     @Column (name="password")

@@ -10,12 +10,13 @@ import java.time.LocalDate;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name="customers")
 public class CustomerEntity {
 
     @Id
-    @Column(name="CUSTOMERID")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

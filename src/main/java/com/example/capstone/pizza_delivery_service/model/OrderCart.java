@@ -31,5 +31,10 @@ public class OrderCart {
         dishesList.remove(ID);
     }
 
-
+    @Override
+    public String toString() {
+        return "OrderCart{" +
+                "dishesList=" + dishesList +
+                '}';
+    }
 }

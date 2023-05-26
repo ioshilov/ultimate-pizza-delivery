@@ -13,6 +13,10 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" th:href="@{/index}">Pizza delivery service, please choose you favorite pizza</a>
+        <form action="#" th:action="@{/invalidatesession}" method="post" >
+        <input class="btn btn-primary" type="submit" value="Close session" >
+    </form>
+
     </nav>
 </header>
 
