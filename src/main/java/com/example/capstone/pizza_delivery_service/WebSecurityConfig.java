@@ -36,11 +36,11 @@ public class WebSecurityConfig  {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(t->t.anyRequest().permitAll())
-//                .requestMatchers("/", "/index","/addtocart/{ID}").permitAll()
-//                .requestMatchers("/customers/**").hasRole("CUSTOMER")
-//                .requestMatchers("/orders","/pay").hasRole("ADMIN")
-//                .anyRequest().authenticated())
+                .authorizeHttpRequests(t->t
+                .requestMatchers("/", "/index","/addtocart/{ID}","/login").permitAll()
+                .requestMatchers("/customers/**").hasRole("CUSTOMER")
+                .requestMatchers("/orders","/pay").hasRole("ADMIN")
+                .anyRequest().authenticated())
 //                .and()
                 .formLogin(form->form.loginPage("/login")
                         .loginProcessingUrl("/login")

@@ -1,7 +1,10 @@
 package com.example.capstone.pizza_delivery_service.model;
 
+import com.example.capstone.pizza_delivery_service.controller.Controller;
 import com.example.capstone.pizza_delivery_service.entity.AuthGroupEntity;
 import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 public class UserPrincipal implements UserDetails {
-
+    Logger logger = LoggerFactory.getLogger(Controller.class);
     private CustomersCredentialsEntity user;
     private List<AuthGroupEntity> authGroups;
 
@@ -27,7 +30,9 @@ public class UserPrincipal implements UserDetails {
         Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
         authGroups.forEach(group->{
             grantedAuthorities.add(new SimpleGrantedAuthority(group.getAuthgroup()));
+
         });
+        logger.info(grantedAuthorities.toString());
         return grantedAuthorities;
 
     }
