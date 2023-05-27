@@ -2,11 +2,12 @@ package com.example.capstone.pizza_delivery_service.entity;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter

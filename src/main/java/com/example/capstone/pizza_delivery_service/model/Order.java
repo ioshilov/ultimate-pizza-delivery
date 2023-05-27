@@ -1,9 +1,6 @@
 package com.example.capstone.pizza_delivery_service.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

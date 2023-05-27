@@ -1,9 +1,6 @@
 package com.example.capstone.pizza_delivery_service.entity;
 
-import com.example.capstone.pizza_delivery_service.model.OrderCart;
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +20,12 @@ public class OrderDetailsEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ordercartid", referencedColumnName = "id")
     private OrderCartEntity orderCartEntity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderid", referencedColumnName = "id")
+    private OrdersEntity ordersEntity;
+
+
 
     @Column(name="deliveryname")
         private String deliveryName;

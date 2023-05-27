@@ -1,6 +1,5 @@
 package com.example.capstone.pizza_delivery_service.model;
 
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;

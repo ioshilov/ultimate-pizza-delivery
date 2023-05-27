@@ -2,7 +2,6 @@ package com.example.capstone.pizza_delivery_service.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,8 +19,8 @@ public class OrdersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @OneToOne
-//    private CustomerEntity customerEntity;
+    @OneToOne(mappedBy = "ordersEntity")
+    private OrderDetailsEntity orderDetailsEntity;
 
 
     @Column(name="sum")

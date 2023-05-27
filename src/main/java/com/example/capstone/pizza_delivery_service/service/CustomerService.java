@@ -2,7 +2,10 @@ package com.example.capstone.pizza_delivery_service.service;
 
 import com.example.capstone.pizza_delivery_service.controller.Controller;
 import com.example.capstone.pizza_delivery_service.entity.*;
-import com.example.capstone.pizza_delivery_service.model.*;
+import com.example.capstone.pizza_delivery_service.model.Customer;
+import com.example.capstone.pizza_delivery_service.model.Dishes;
+import com.example.capstone.pizza_delivery_service.model.OrderCart;
+import com.example.capstone.pizza_delivery_service.model.OrderDetails;
 import com.example.capstone.pizza_delivery_service.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,6 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +76,7 @@ public class CustomerService {
         orderDetailsEntity.setDeliveryAddress(orderDetails.getAddress());
         orderDetailsEntity.setDeliveryComments(orderDetails.getComments());
         orderDetailsEntity.setOrderCartEntity(orderCartEntity);
+        orderDetailsEntity.setOrdersEntity(ordersEntity);
         orderDetailsRepository.save(orderDetailsEntity);
         logger.error("**********Service  VICTORY Order details saved *****************");
 

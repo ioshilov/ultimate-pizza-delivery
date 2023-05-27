@@ -2,9 +2,10 @@ package com.example.capstone.pizza_delivery_service.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Entity
@@ -14,18 +15,20 @@ import lombok.Setter;
 public class CustomersCredentialsEntity {
 
     @Id
-    @Column(name="CUSTOMERID")
-    private Integer id;
+    @Column(name="customerid")
+    private Integer customerid;
     @Column (name="username")
-    private String login;
+    private String username;
     @Column (name="password")
     private String password;
-    @Column (name="role")
-    private String role;
 
-    @OneToOne(optional = false)
-    @PrimaryKeyJoinColumn
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customerid")
     private CustomerEntity customerEntity;
+
+    @OneToMany (mappedBy = "customersCredentialsEntity",fetch = FetchType.EAGER)
+    private List<AuthGroupEntity> authGroupEntityList;
 
     public CustomersCredentialsEntity() {
     }

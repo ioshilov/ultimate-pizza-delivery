@@ -11,7 +11,6 @@ import com.example.capstone.pizza_delivery_service.repositories.CustomersReposit
 import com.example.capstone.pizza_delivery_service.repositories.FoodTypesRepository;
 import com.example.capstone.pizza_delivery_service.repositories.ToppingsRepository;
 import com.example.capstone.pizza_delivery_service.service.CustomerService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +81,7 @@ public class Controller {
         logger.error("*************Testing payment**************");
         logger.error(orderDetails.toString());
         customerService.createOrder(orderCart,orderDetails);
+
         return "redirect:/";
     }
 
@@ -121,7 +121,7 @@ public class Controller {
 
         Customer customers= new Customer(customerEntity.getId(),customerEntity.getName(),customerEntity.getSurname(),customerEntity.getMobile(),customerEntity.getDOB(),customerEntity.getEmail(),customerEntity.getHomeAddress());
         CustomersCredentialsEntity customersCredentialsEntity=customerEntity.getCustomersCredentialsEntity();
-        CustomersCredentials customersCredentials=new CustomersCredentials(customersCredentialsEntity.getId(),customersCredentialsEntity.getLogin(),customersCredentialsEntity.getPassword(),customersCredentialsEntity.getRole());
+        CustomersCredentials customersCredentials=new CustomersCredentials(customersCredentialsEntity.getCustomerEntity().getId(), customersCredentialsEntity.getUsername(),customersCredentialsEntity.getPassword());
         model.addAttribute("customers",customers);
         model.addAttribute("customerscredentials",customersCredentials);
 
@@ -129,10 +129,15 @@ public class Controller {
     }
 
 
-    @PostMapping("/invalidatesession")
-    public String destroySession(HttpServletRequest request) {
-        //invalidate the session , this will clear the data from configured database (Mysql/redis/hazelcast)
-        request.getSession().invalidate();
-        return "redirect:/";
+    @GetMapping(value = "/login")
+    public String getlogin(Model model){
+        return "login";
     }
+
+//    @PostMapping("/invalidatesession")
+//    public String destroySession(HttpServletRequest request) {
+//        //invalidate the session , this will clear the data from configured database (Mysql/redis/hazelcast)
+//        request.getSession().invalidate();
+//        return "redirect:/";
+//    }
 }
