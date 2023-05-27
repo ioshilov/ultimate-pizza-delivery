@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4">Welcome to Pizza delivery service</h1>
+        <p> Service description</p>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center" style="background:#adb5bd;">
+            <div   class="col-6 col-sm-6 " >
+
+                <table class="table table-striped w-auto" align="center">
+                    <thead class="ttop">
+                    <tr class="table-info">
+                        <td width="20px"><b> №</b></td>
+                        <td><b>Description</b></td>
+                        <td width="60px"><b>Price</b></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dish,iter : ${dishes}" class="display-6">
+                        <td th:text=${iter.index}+1>Num</td>
+                        <td th:text="${dish.description}">Food</td>
+                        <td th:text="${dish.sum}">Price</td>
+                        </td></tr>
+
+                    </tbody>
+                </table>
+                <div class="container" align="right">
+                    <td><b>Total: </b></td>
+                    <td><b th:text="${#aggregates.sum(dishes.![sum])}"/></td>
+                    <td><b>tg. </b></td>
+                    <br>
+                    <br>
+                    <form action="#" th:action="@{/pay}" method="get" >
+                        <input class="btn btn-primary" type="submit" value="Proceed to checkout" >
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

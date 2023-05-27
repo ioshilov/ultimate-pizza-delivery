@@ -14,3 +14,10 @@
 .form-row{
     padding-top: 8px;
 }
+
+li {
+  list-style-type: none;
+}
+
+html,html *{box-sizing: border-box !important;}
+

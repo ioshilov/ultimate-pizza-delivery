@@ -1,21 +1,21 @@
-package com.example.capstone.pizza_deilevery_service.entity;
+package com.example.capstone.pizza_delivery_service.entity;
 
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
+
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name="customers")
 public class CustomerEntity {
 
     @Id
-    @Column(name="CUSTOMERID")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -32,4 +32,11 @@ public class CustomerEntity {
     @Column (name="HOMEADDRESS")
     private String homeAddress;
 
+    @OneToOne(mappedBy = "customerEntity", cascade =  CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private CustomersCredentialsEntity customersCredentialsEntity;
+
+
+    public CustomerEntity() {
+    }
 }
