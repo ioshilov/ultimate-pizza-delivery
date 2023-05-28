@@ -10,6 +10,8 @@ import com.example.capstone.pizza_delivery_service.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
@@ -49,15 +51,15 @@ public class CustomerService {
         this.customersRepository = customersRepository;
     }
 
-    public List<Customer> getAllCustomers() {
-
-        return customersRepository.findAll().stream().map(x -> new Customer(x.getId(), x.getName(), x.getSurname(), x.getMobile(), x.getDOB(), x.getEmail(), x.getHomeAddress())).collect(Collectors.toList());
-    }
-
-    public Customer getCustomerCredentialsbyID() {
-        return customersRepository.findById(1).stream().map(x -> new Customer(x.getId(), x.getName(), x.getSurname(), x.getMobile(), x.getDOB(), x.getEmail(), x.getHomeAddress())).limit(1).findFirst().get();
-
-    }
+//    public List<Customer> getAllCustomers() {
+//
+//        return customersRepository.findAll().stream().map(x -> new Customer(x.getId(), x.getName(), x.getSurname(), x.getMobile(), x.getDOB(), x.getEmail(), x.getHomeAddress())).collect(Collectors.toList());
+//    }
+//
+//    public Customer getCustomerCredentialsbyID() {
+//        return customersRepository.findById(1).stream().map(x -> new Customer(x.getId(), x.getName(), x.getSurname(), x.getMobile(), x.getDOB(), x.getEmail(), x.getHomeAddress())).limit(1).findFirst().get();
+//
+//    }
 
     public void createOrder(OrderCart orderCart, OrderDetails orderDetails) {
         OrdersEntity ordersEntity = new OrdersEntity();
@@ -78,6 +80,14 @@ public class CustomerService {
         orderDetailsEntity.setOrderCartEntity(orderCartEntity);
         orderDetailsEntity.setOrdersEntity(ordersEntity);
         orderDetailsRepository.save(orderDetailsEntity);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+
+        if (!auth.getPrincipal().toString().equals("anonymousUser")){
+        logger.error("**********Customer: "+ auth.getPrincipal()+"*****************");}
+        else logger.error("**********Customer anonymous  *****************");
+
         logger.error("**********Service  VICTORY Order details saved *****************");
 
     }

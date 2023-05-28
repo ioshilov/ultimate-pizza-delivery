@@ -29,17 +29,18 @@ CREATE TABLE customerscredentials (
 	id serial PRIMARY KEY,
 	customerid INT UNIQUE NOT NULL,
 	username VARCHAR (50) UNIQUE NOT NULL,
-	password VARCHAR (50) NOT NULL,
+	password VARCHAR (100) NOT NULL,
 	FOREIGN KEY (customerid)
       REFERENCES customers (id)
 );
 
 CREATE TABLE authusergroup (
 	id serial  PRIMARY KEY,
-	username VARCHAR (50) , 
-	authgroup VARCHAR (50),
-	FOREIGN KEY (username)
-      REFERENCES customerscredentials (username)
+	customerscredentialsid INT NOT NULL,
+	usernameauth VARCHAR (50) NOT NULL,
+	authgroup VARCHAR (50) NOT NULL,
+	FOREIGN KEY (customerscredentialsid)
+      REFERENCES customerscredentials (id)
 );
 
 CREATE TABLE orders (
@@ -130,20 +131,20 @@ VALUES('BOB','DYLAN',+77011112233,'2022-06-01','BOBDYLAN@GMAIL.COM','BOBDYLANS H
 
 INSERT INTO customerscredentials (customerid, username,password)
 VALUES
-('1','BOBDYLAN','BOBDYLAN'),
+('1','BOBDYLAN','$2a$10$v2qtFXNMtty347.iYAVu1.94T.Hk1L19jFHWis4EjExx.Jh7S0fWa'),
 ('2','SBOB','SBPASSWORD'),
 ('3','BAFFLEK','BAPASSWORD'),
 ('4','NPortman','NPPASSWORD')
 ;
 
 
-INSERT INTO authusergroup (username,authgroup)
+INSERT INTO authusergroup (customerscredentialsid,usernameauth,authgroup)
 VALUES
-('BOBDYLAN','ADMIN'),
-('BOBDYLAN','CUSTOMER'),
-('SBOB','CUSTOMER'),
-('BAFFLEK','CUSTOMER'),
-('NPortman','CUSTOMER');
+(1,'BOBDYLAN','ADMIN'),
+(1,'BOBDYLAN','CUSTOMER'),
+(2,'SBOB','CUSTOMER'),
+(3,'BAFFLEK','CUSTOMER'),
+(4,'NPortman','CUSTOMER');
 
 
 INSERT INTO foodtypes (name,price,description) VALUES

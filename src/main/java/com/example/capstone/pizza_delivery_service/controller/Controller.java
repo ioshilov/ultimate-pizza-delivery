@@ -1,19 +1,24 @@
 package com.example.capstone.pizza_delivery_service.controller;
 
 
+import com.example.capstone.pizza_delivery_service.entity.AuthGroupEntity;
 import com.example.capstone.pizza_delivery_service.entity.CustomerEntity;
 import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEntity;
 import com.example.capstone.pizza_delivery_service.entity.FoodTypesEntity;
 import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
 import com.example.capstone.pizza_delivery_service.mapper.ToppingsMapper;
 import com.example.capstone.pizza_delivery_service.model.*;
+import com.example.capstone.pizza_delivery_service.repositories.CustomersCredentialsRepository;
 import com.example.capstone.pizza_delivery_service.repositories.CustomersRepository;
 import com.example.capstone.pizza_delivery_service.repositories.FoodTypesRepository;
 import com.example.capstone.pizza_delivery_service.repositories.ToppingsRepository;
 import com.example.capstone.pizza_delivery_service.service.CustomerService;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +38,12 @@ public class Controller {
     private  FoodTypesRepository foodTypesRepository;
 
     @Autowired
+    private CustomersCredentialsRepository customersCredentialsRepository;
+
+    @Autowired
     private ToppingsRepository toppingsRepository;
+    @Autowired
+    private Customer customer;
 
 
     @Autowired
@@ -57,16 +67,17 @@ public class Controller {
         model.addAttribute("toppingslist",toppingsRepository.findAll().stream().map(x->new Toppings(x.getName(),x.getPrice())).toList());
         model.addAttribute("dishes",orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("customer", customer);
 
         logger.error("********************Your cart is full of " + orderCart.toString());
         return "index";
     }
-    @GetMapping(value = "/customers")
-    public String getAll (Model model){
-        List<Customer> customers= customerService.getAllCustomers();
-        model.addAttribute("customers",customers);
-    return "guests-view";
-    }
+//    @GetMapping(value = "/customers")
+//    public String getAll (Model model){
+//        List<Customer> customers= customerService.getAllCustomers();
+//        model.addAttribute("customers",customers);
+//    return "guests-view";
+//    }
 
     @GetMapping(value = "/delete/{ID}")
     public String deleteFromCart (@PathVariable Integer ID){
@@ -81,7 +92,7 @@ public class Controller {
         logger.error("*************Testing payment**************");
         logger.error(orderDetails.toString());
         customerService.createOrder(orderCart,orderDetails);
-
+        orderCart=new OrderCart();
         return "redirect:/";
     }
 
@@ -115,29 +126,53 @@ public class Controller {
         return  "ordercart";
     }
 
-    @GetMapping(value = "/customers/credentials")
-    public String getCustomerCredentials (Model model){
-        CustomerEntity customerEntity=customersRepository.findById(1).stream().findFirst().get();
+    @PostMapping(value = "/signup")
+    public String getCustomerCredentials ( @ModelAttribute(value = "customer") Customer customer){
+        CustomersCredentialsEntity customersCredentialsEntityFromDatabase=customersCredentialsRepository.findByUsername(customer.getUsername());
+        if (customersCredentialsEntityFromDatabase!=null) return "error";
 
-        Customer customers= new Customer(customerEntity.getId(),customerEntity.getName(),customerEntity.getSurname(),customerEntity.getMobile(),customerEntity.getDOB(),customerEntity.getEmail(),customerEntity.getHomeAddress());
-        CustomersCredentialsEntity customersCredentialsEntity=customerEntity.getCustomersCredentialsEntity();
-        CustomersCredentials customersCredentials=new CustomersCredentials(customersCredentialsEntity.getCustomerEntity().getId(), customersCredentialsEntity.getUsername(),customersCredentialsEntity.getPassword());
-        model.addAttribute("customers",customers);
-        model.addAttribute("customerscredentials",customersCredentials);
+        CustomersCredentialsEntity customersCredentialsEntity=new CustomersCredentialsEntity();
+        CustomerEntity customerEntity=new CustomerEntity();
+        AuthGroupEntity authGroupEntity=new AuthGroupEntity();
 
-        return "credentials-view";
+        authGroupEntity.setAuthgroup("CUSTOMER");
+        List<AuthGroupEntity> authGroupEntityList=new ArrayList<>();
+        authGroupEntityList.add(authGroupEntity);
+
+        logger.error("******************** Customer2DB"+ authGroupEntityList+"***************");
+
+        authGroupEntity.setCustomersCredentialsEntity(customersCredentialsEntity);
+
+        customersCredentialsEntity.setUsername(customer.getUsername());
+        customersCredentialsEntity.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
+        customersCredentialsEntity.setAuthGroupEntityList(authGroupEntityList);
+        customersCredentialsEntity.setCustomerEntity(customerEntity);
+//        customersCredentialsEntity.setCustomerid(customerEntity.getId());
+
+        logger.error("******************** Customer2DB"+ customersCredentialsEntity+"***************");
+
+        customerEntity.setName(customer.getName());
+        customerEntity.setSurname(customer.getSurname());
+        customerEntity.setMobile(customer.getMobile());
+        customerEntity.setHomeAddress(customer.getHomeAddress());
+        customerEntity.setDOB(customer.getDOB());
+        customerEntity.setEmail(customer.getEmail());
+        customerEntity.setCustomersCredentialsEntity(customersCredentialsEntity);
+
+        logger.error("******************** Customer2DB"+ customerEntity+"***************");
+
+        customersRepository.save(customerEntity);
+
+
+        return "redirect:/";
     }
 
 
     @GetMapping(value = "/login")
     public String getlogin(Model model){
+        model.addAttribute("customer", customer);
         return "login";
     }
 
-//    @PostMapping("/invalidatesession")
-//    public String destroySession(HttpServletRequest request) {
-//        //invalidate the session , this will clear the data from configured database (Mysql/redis/hazelcast)
-//        request.getSession().invalidate();
-//        return "redirect:/";
-//    }
+
 }

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +22,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
 
 @Configuration
 @EnableWebSecurity
@@ -37,9 +43,9 @@ public class WebSecurityConfig  {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(t->t
-                .requestMatchers("/", "/index","/addtocart/{ID}","/login").permitAll()
-                .requestMatchers("/customers/**").hasRole("CUSTOMER")
-                .requestMatchers("/orders","/pay").hasRole("ADMIN")
+                .requestMatchers("/", "/index","/addtocart/{ID}","/login","/signup","/css/*", "/js/*","/images/*","/error","/pay").permitAll()
+//                .requestMatchers("/customers/**").hasAuthority("CUSTOMER")
+                .requestMatchers("/orders","/pay").hasAuthority("ADMIN")
                 .anyRequest().authenticated())
 //                .and()
                 .formLogin(form->form.loginPage("/login")
@@ -48,11 +54,13 @@ public class WebSecurityConfig  {
                 .logout(out ->
                         out.logoutRequestMatcher(new
                                         AntPathRequestMatcher("/logout"))
-                                .permitAll()
-                )
-
-                .authenticationProvider(authProvider()
-                );
+                                .permitAll())
+                .authenticationProvider(authProvider());
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+//                        .invalidSessionUrl("/error.html")
+//                        .maximumSessions(1)
+//                        .maxSessionsPreventsLogin(true));;
         return http.build();
 
     }
@@ -85,4 +93,6 @@ public class WebSecurityConfig  {
         simpleUrlAuthenticationSuccessHandler.setDefaultTargetUrl("/");
         return simpleUrlAuthenticationSuccessHandler;
     }
+
+
 }

@@ -14,20 +14,26 @@ import java.util.List;
 @Table(name="customerscredentials")
 public class CustomersCredentialsEntity {
 
+
     @Id
-    @Column(name="customerid")
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name="customerid",unique=true,insertable=false, updatable=false,nullable = false)
     private Integer customerid;
-    @Column (name="username",nullable = false,unique = true)
+    @Column (name="username")
     private String username;
     @Column (name="password",nullable = false)
     private String password;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "customerid")
+    @MapsId
     private CustomerEntity customerEntity;
 
-    @OneToMany (mappedBy = "customersCredentialsEntity",fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "customersCredentialsEntity",fetch = FetchType.LAZY,cascade =  CascadeType.ALL)
     private List<AuthGroupEntity> authGroupEntityList;
 
     public CustomersCredentialsEntity() {

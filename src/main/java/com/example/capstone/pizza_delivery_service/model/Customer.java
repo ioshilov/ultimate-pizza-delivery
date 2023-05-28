@@ -1,25 +1,22 @@
 package com.example.capstone.pizza_delivery_service.model;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 
 import java.time.LocalDate;
 
+@Component
+@SessionScope
+@NoArgsConstructor
 @Getter
 @Setter
 public class Customer{
 
-    public Customer(Integer id, String name, String surname, String mobile, LocalDate DOB, String email, String homeAddress) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.mobile = mobile;
-        this.DOB = DOB;
-        this.email = email;
-        this.homeAddress = homeAddress;
-    }
-
-    private Integer id;
+      private Integer id;
     private String name;
     private String surname;
 
@@ -30,6 +27,12 @@ public class Customer{
     private String email;
 
     private String homeAddress;
+
+    private String username;
+
+    private String password;
+
+
 
 }
 

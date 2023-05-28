@@ -12,9 +12,10 @@ import lombok.Setter;
 public class AuthGroupEntity {
     @Id
     @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column (name="usernameauth",nullable = false)
-    private String usernameauth;
+//    @Column (name="usernameauth",nullable = false)
+//    private String usernameauth;
     @Column (name="authgroup",nullable = false)
     private String authgroup;
 

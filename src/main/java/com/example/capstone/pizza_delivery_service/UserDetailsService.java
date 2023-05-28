@@ -42,6 +42,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 //        Optional<CustomersCredentialsEntity> user = list.stream().filter(x -> x.getUsername().equals(username)).findFirst();
 
             CustomersCredentialsEntity user = this.customersCredentialsRepository.findByUsername(username);
+            Integer id=user.getCustomerid();
 
         if (user==null) {
             throw new UsernameNotFoundException("cannot find username: " + username);
@@ -53,7 +54,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 //        user.setPassword(encodedPassword);
         logger.info(encodedPassword);
 
-            List<AuthGroupEntity> authGroups = this.authGroupRepository.findAllByusernameauth(username);
+            List<AuthGroupEntity> authGroups = this.authGroupRepository.findAllByid(id);
         return new UserPrincipal(user, authGroups);
     }
 }
