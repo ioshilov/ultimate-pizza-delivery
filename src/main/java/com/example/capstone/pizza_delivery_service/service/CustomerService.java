@@ -36,8 +36,9 @@ public class CustomerService {
     @Autowired
     private DishesRepository dishesRepository;
     @Autowired
-
     private ToppingsRepository toppingsRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Autowired
 
@@ -70,7 +71,7 @@ public class CustomerService {
 
     }
 
-    public void createOrder(OrderCart orderCart, OrderDetails orderDetails, UserPrincipal user) {
+    public void createOrder(OrderCart orderCart, OrderDetails orderDetails, UserPrincipal user,String payment) {
         OrdersEntity ordersEntity = new OrdersEntity();
         ordersEntity.setLocalDate(LocalDate.now());
         ordersEntity.setSum(orderCart.getDishesList().stream().map(Dishes::getSum).reduce(BigDecimal.ZERO, BigDecimal::add));
@@ -91,6 +92,11 @@ public class CustomerService {
         orderDetailsEntity.setOrderCartEntity(orderCartEntity);
         orderDetailsEntity.setOrdersEntity(ordersEntity);
         orderDetailsRepository.save(orderDetailsEntity);
+
+        PaymentEntity paymentEntity=new PaymentEntity();
+        paymentEntity.setOrdersEntity(ordersEntity);
+        paymentEntity.setPaymentmethod(payment);
+        paymentRepository.save(paymentEntity);
 
 
         logger.info("**********Service  VICTORY Order details saved *****************");

@@ -17,6 +17,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Customer ID</th>
                 <th scope="col">Sum</th>
+                <th scope="col">Payment method</th>
                 <th scope="col">Date</th>
                 <th scope="col">Delivery name</th>
                 <th scope="col">Delivery address</th>
@@ -29,6 +30,7 @@
                     <td th:text="${order.id}"></td>
                     <th scope="row"><a th:href="@{'/customers/' + ${order.customerid}}" th:text="${order.customerid}"></a></th>
                     <td th:text="${order.sum}"></td>
+                    <td th:text="${order.paymentEntity.paymentmethod}"></td>
                     <td th:text="${order.localDate}"></td>
                     <td th:text="${order.orderDetailsEntity.deliveryName}"></td>
                     <td th:text="${order.orderDetailsEntity.deliveryAddress}"></td>

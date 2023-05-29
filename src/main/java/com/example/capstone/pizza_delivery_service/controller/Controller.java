@@ -64,7 +64,7 @@ public class Controller {
 
         logger.info("********************INDEX*****************");
         List< FoodTypesEntity> foodTypesEntities =foodTypesRepository.findAll();
-         model.addAttribute("foodtypes",foodTypesEntities);
+        model.addAttribute("foodtypes",foodTypesEntities);
         model.addAttribute("toppingslist",toppingsRepository.findAll().stream().map(x->new Toppings(x.getName(),x.getPrice())).toList());
         model.addAttribute("dishes",orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);
@@ -105,12 +105,12 @@ public class Controller {
     }
 
     @PostMapping(value= "/pay")
-    public String addToCart ( @ModelAttribute(value = "orderDetails") OrderDetails orderDetails, @AuthenticationPrincipal UserPrincipal user){
+    public String addToCart ( @ModelAttribute(value = "orderDetails") OrderDetails orderDetails,@RequestParam(value="action", required=true) String action, @AuthenticationPrincipal UserPrincipal user){
         logger.info("*************Testing payment**************");
         logger.error(orderDetails.toString());
         if (orderCart.getDishesList().isEmpty()) {return "redirect:/";}
-
-        customerService.createOrder(orderCart,orderDetails,user);
+        logger.info("*************"+ action +"**************");
+        customerService.createOrder(orderCart,orderDetails,user,action);
         orderCart=new OrderCart();
         return "redirect:/";
     }

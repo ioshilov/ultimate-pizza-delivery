@@ -1,6 +1,7 @@
 package com.example.capstone.pizza_delivery_service.entity;
 
 
+import com.example.capstone.pizza_delivery_service.repositories.PaymentRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,9 @@ public class OrdersEntity {
     private BigDecimal sum;
     @Column(name="date")
     private LocalDate localDate;
+
+    @OneToOne(mappedBy = "ordersEntity")
+    private PaymentEntity paymentEntity;
 
 
 

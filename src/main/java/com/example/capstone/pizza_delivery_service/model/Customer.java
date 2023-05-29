@@ -26,7 +26,6 @@ public class Customer{
     @NotEmpty(message = "Name is required")
     private String name;
     @Size(min=2, max=50)
-    @NotEmpty(message = "Lastname is required")
     private String surname;
     @Size(min=2, max=20, message = "Mobile number must be less 20 digits")
     @NotEmpty

@@ -1,6 +1,7 @@
 package com.example.capstone.pizza_delivery_service.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,16 +27,19 @@ public class OrderDetailsEntity {
     private OrdersEntity ordersEntity;
 
 
-
     @Column(name="deliveryname")
+    @NotNull
         private String deliveryName;
     @Column(name="deliverymobile")
+    @NotNull
         private String deliveryMobile;
     @Column(name="deliveryaddress")
+    @NotNull
         private String deliveryAddress;
     @Column(name="specialcomments")
         private String deliveryComments;
     @Column(name="deliveryprice")
+    @NotNull
         private BigDecimal deliveryPrice;
 
     }

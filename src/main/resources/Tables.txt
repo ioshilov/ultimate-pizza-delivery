@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS customers  ;
 CREATE TABLE customers (
    id serial PRIMARY KEY,
    name VARCHAR ( 50 ) NOT NULL,
-   surname VARCHAR ( 50 ),
+   surname VARCHAR ( 50 ) NOT NULL,
    mobile VARCHAR ( 20) NOT NULL,
    dob DATE NOT NULL,
    email VARCHAR ( 50 ) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE customerscredentials (
 CREATE TABLE authusergroup (
 	id serial  PRIMARY KEY,
 	customerscredentialsid INT ,
-	authgroup VARCHAR (50) NOT NULL,
+	authgroup VARCHAR (20) NOT NULL,
 	FOREIGN KEY (customerscredentialsid)
       REFERENCES customerscredentials (id)
 );
@@ -50,72 +50,75 @@ CREATE TABLE orders (
 	FOREIGN KEY (customerid)
       REFERENCES customers (id)
 	  );
-	  
-CREATE TABLE foodtypes (	
+
+CREATE TABLE foodtypes (
 	id serial PRIMARY KEY,
 	name VARCHAR ( 20 ) NOT NULL,
 	price decimal NOT NULL,
 	description VARCHAR (200) NOT NULL,
 	image bytea
 	);
-	  
-	  
-CREATE TABLE toppings (	
+
+
+CREATE TABLE toppings (
 	id serial PRIMARY KEY,
 	name VARCHAR ( 50 ) NOT NULL,
 	price decimal NOT NULL
 	);
-	
- 
+
+
 CREATE TABLE dishes (
 	id serial PRIMARY KEY,
 	foodtypeid INT,
 	FOREIGN KEY (foodtypeid)
-      REFERENCES foodtypes (id) 
+      REFERENCES foodtypes (id)
 	);
-	
-	
-	
+
+
+
 CREATE TABLE toppings_dishes (
 	toppingid INT references toppings (id) ,
 	dishid INT references dishes (id),
 	CONSTRAINT toppings_dishes_pk PRIMARY KEY (dishid,toppingid));
-	  
-	  
+
+
 CREATE TABLE ordercart (
 		id serial PRIMARY KEY
-	  );  
-	  
-	  
+	  );
+
+
 CREATE TABLE ordercart_dishes (
 	ordercartid INT references  ordercart(id) ,
 	dishid INT references dishes (id),
 	CONSTRAINT ordercart_dishes_pk PRIMARY KEY (ordercartid,dishid));
-	  
-	  
-	  
+
+
+
 CREATE TABLE orderdetails (
 	id serial PRIMARY KEY,
 	orderid INT,
 	ordercartid INT,
-	deliveryname VARCHAR ( 50 ),
-	deliveryMOBILE VARCHAR ( 50 ),
-	deliveryADDRESS VARCHAR ( 200 ),
-	SPECIALCOMMENTS VARCHAR ( 200 ),
+	deliveryname VARCHAR ( 50 ) NOT NULL,
+	deliveryMOBILE VARCHAR ( 50 ) NOT NULL,
+	deliveryADDRESS VARCHAR ( 200 ) NOT NULL,
+	SPECIALCOMMENTS VARCHAR ( 200 ) NOT NULL,
 	deliveryprice decimal NOT NULL,
 	FOREIGN KEY (orderid)
       REFERENCES orders (id),
 	FOREIGN KEY (ordercartid)
       REFERENCES orderCart (id)
 	  );
-	  
+
 CREATE TABLE payments (
 	id serial PRIMARY KEY,
 	orderid INT,
-	paymentmethod VARCHAR ( 50 ) NOT NULL,
+	paymentmethod VARCHAR ( 20 ) NOT NULL,
 	FOREIGN KEY (orderid)
       REFERENCES orders (id)
 	  );
+
+
+
 	  
 	  
 
