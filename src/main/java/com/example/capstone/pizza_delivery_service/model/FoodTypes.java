@@ -11,12 +11,13 @@ import java.math.BigDecimal;
 @Component
 @SessionScope
 public class FoodTypes {
-
+    private Integer id;
     private String Name;
     private BigDecimal Price;
     private String Description;
 
-    public FoodTypes(String name, BigDecimal price, String description) {
+    public FoodTypes(Integer id, String name, BigDecimal price, String description) {
+        this.id = id;
         Name = name;
         Price = price;
         Description = description;

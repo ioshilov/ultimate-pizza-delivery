@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CustomersCredentialsRepository extends JpaRepository<CustomersCredentialsEntity,Integer> {
 
-    CustomersCredentialsEntity findByUsername(String user);
+    Optional<CustomersCredentialsEntity> findByUsername(String user);
 }

@@ -15,16 +15,11 @@ import java.util.List;
 @SessionScope
 
 public class OrderCart {
-
     private boolean isEmpty=true;
-
-
-   private List<Dishes> dishesList=new ArrayList<>();
-
+    private List<Dishes> dishesList=new ArrayList<>();
     public List<Dishes> getDishesList() {
         return dishesList;
     }
-
     public void addDishes (Dishes dishes){
         dishesList.add(dishes);
         checkIfEmpty();
@@ -43,10 +38,6 @@ public class OrderCart {
     }
 
     public void checkIfEmpty() {
-        if (dishesList.isEmpty()) {
-            setEmpty(true);
-        } else {
-            setEmpty(false);
-        }
+        setEmpty(dishesList.isEmpty());
     }
 }

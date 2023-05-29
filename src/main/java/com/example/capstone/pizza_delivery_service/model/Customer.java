@@ -1,15 +1,11 @@
 package com.example.capstone.pizza_delivery_service.model;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
-
 import java.time.LocalDate;
 import java.util.List;
 

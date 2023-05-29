@@ -7,5 +7,4 @@ public interface ToppingsRepository extends JpaRepository<ToppingsEntity,Integer
 
     ToppingsEntity findByName(String name);
 
-//    List<ToppingsEntity> findToppingsByDishesID(Long dishID);
 }

@@ -29,7 +29,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        CustomersCredentialsEntity user = customersCredentialsRepository.findByUsername(username);
+        CustomersCredentialsEntity user = customersCredentialsRepository.findByUsername(username).orElse(null);
 
         if (user == null) {
             throw new UsernameNotFoundException("cannot find username: " + username);

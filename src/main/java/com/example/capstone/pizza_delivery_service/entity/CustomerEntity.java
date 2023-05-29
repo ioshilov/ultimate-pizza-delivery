@@ -51,6 +51,19 @@ public class CustomerEntity {
             fetch = FetchType.LAZY, optional = false)
     private CustomersCredentialsEntity customersCredentialsEntity;
 
+    @Override
+    public String toString() {
+        return "CustomerEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", DOB=" + DOB +
+                ", email='" + email + '\'' +
+                ", homeAddress='" + homeAddress + '\'' +
+                ", customersCredentialsEntity=" + customersCredentialsEntity +
+                '}';
+    }
 
     public CustomerEntity() {
     }

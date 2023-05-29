@@ -12,9 +12,7 @@ import java.util.stream.Collectors;
 @Component
 @SessionScope
 public class Dishes {
-
-//    private Integer ID;
-    private FoodTypes foodType;
+    private final FoodTypes foodType;
    private List<Toppings> toppings;
    private BigDecimal sum;
 

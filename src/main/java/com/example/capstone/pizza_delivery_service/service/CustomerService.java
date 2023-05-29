@@ -2,21 +2,22 @@ package com.example.capstone.pizza_delivery_service.service;
 
 import com.example.capstone.pizza_delivery_service.controller.Controller;
 import com.example.capstone.pizza_delivery_service.entity.*;
+import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
+import com.example.capstone.pizza_delivery_service.mapper.ToppingsMapper;
 import com.example.capstone.pizza_delivery_service.model.*;
 import com.example.capstone.pizza_delivery_service.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @SessionScope
@@ -26,7 +27,8 @@ public class CustomerService {
     Logger logger = LoggerFactory.getLogger(Controller.class);
     @Autowired
     private CustomersCredentialsRepository customersCredentialsRepository;
-    private final CustomersRepository customersRepository;
+    @Autowired
+    private CustomersRepository customersRepository;
     @Autowired
     private OrdersRepository ordersRepository;
     @Autowired
@@ -39,48 +41,26 @@ public class CustomerService {
     private ToppingsRepository toppingsRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-
     @Autowired
-
     private FoodTypesRepository foodTypesRepository;
+    @Autowired
+    private DatabaseService databaseService;
 
 
-    public CustomerService(CustomersRepository customersRepository) {
-        this.customersRepository = customersRepository;
+    public CustomerService() {
     }
 
-    public List<Customer> getAllCustomers() {
-
-        return customersRepository.findAll().stream().map(x -> new Customer(x.getId(),
-                x.getName(),
-                x.getSurname(),
-                x.getMobile(),
-                x.getDOB(),
-                x.getEmail(),
-                x.getHomeAddress(),
-                x.getCustomersCredentialsEntity().getUsername(),
-                x.getCustomersCredentialsEntity().getPassword(),
-                x.getCustomersCredentialsEntity().getAuthGroupEntityList().stream().map(AuthGroupEntity::getAuthgroup).collect(Collectors.toList()))).collect(Collectors.toList());
-    }
-
-    public Customer getAllOrders() {
-        List<OrdersEntity> ordersEntityList = ordersRepository.findAll();
-//ordersEntityList.stream().map(x->x.getOrderDetailsEntity().getOrderCartEntity().)
-
-        return null;
-
-    }
-
-    public void createOrder(OrderCart orderCart, OrderDetails orderDetails, UserPrincipal user,String payment) {
+    public void createOrder(OrderCart orderCart, OrderDetails orderDetails, UserPrincipal user, String payment) {
         OrdersEntity ordersEntity = new OrdersEntity();
         ordersEntity.setLocalDate(LocalDate.now());
         ordersEntity.setSum(orderCart.getDishesList().stream().map(Dishes::getSum).reduce(BigDecimal.ZERO, BigDecimal::add));
 
-        if(user!=null){ordersEntity.setCustomerid(customersCredentialsRepository.findByUsername(user.getUsername()).getCustomerid());}
+        if (user != null) {
+            ordersEntity.setCustomerid(customersCredentialsRepository.findByUsername(user.getUsername()).get().getCustomerid());
+        }
         ordersRepository.save(ordersEntity);
         Integer ordersEntityID = ordersEntity.getId();
         logger.info("ORDER ID =" + ordersEntityID.toString());
-        logger.info("**********Service  Before Cart fill *****************");
         OrderCartEntity orderCartEntity = fillOrderCartWithDishesAndSave(orderCart);
 
         OrderDetailsEntity orderDetailsEntity = new OrderDetailsEntity();
@@ -93,48 +73,31 @@ public class CustomerService {
         orderDetailsEntity.setOrdersEntity(ordersEntity);
         orderDetailsRepository.save(orderDetailsEntity);
 
-        PaymentEntity paymentEntity=new PaymentEntity();
+        PaymentEntity paymentEntity = new PaymentEntity();
         paymentEntity.setOrdersEntity(ordersEntity);
         paymentEntity.setPaymentmethod(payment);
         paymentRepository.save(paymentEntity);
 
-
-        logger.info("**********Service  VICTORY Order details saved *****************");
-
+        logger.warn("**********Service. Order details saved *****************");
     }
 
     public OrderCartEntity fillOrderCartWithDishesAndSave(OrderCart orderCart) {
         List<ToppingsEntity> toppingsEntityList = toppingsRepository.findAll();
-        logger.info("**********Service  STAGE  1 *****************");
         OrderCartEntity orderCartEntity = new OrderCartEntity();
 
-        for (var dish : orderCart.getDishesList()
-        ) {
-
-            logger.info("**********Service  STAGE  2 *****************");
+        for (var dish : orderCart.getDishesList()) {
             DishesEntity dishesEntity = new DishesEntity();
-            String foodname = dish.getFoodType().getName();
-            FoodTypesEntity foodTypesEntity = foodTypesRepository.findByName(foodname);
+            String foodName = dish.getFoodType().getName();
+            FoodTypesEntity foodTypesEntity = foodTypesRepository.findByName(foodName);
             dishesEntity.setFoodTypesEntity(foodTypesEntity);
-            logger.warn("**********" + foodTypesRepository.findByName(dish.getFoodType().getName()).getName() + " *****************");
-            logger.info("**********Service  STAGE  3 *****************");
             dish.getToppings().forEach(x -> {
-                        logger.info("**********Service  STAGE  foreach 1 *****************");
-                        ToppingsEntity toppingsEntity = toppingsEntityList.stream().filter(topping -> topping.getName().equals(x.getName())).findFirst().get();
-                        logger.warn(toppingsEntity.getName());
-                        logger.info("**********Service  STAGE  foreach 2 *****************");
+                ToppingsEntity toppingsEntity = toppingsEntityList.stream().filter(topping -> topping.getName().equals(x.getName())).findFirst().get();
+                dishesEntity.addToppings(toppingsEntity);
+            });
 
-                        dishesEntity.addToppings(toppingsEntity);
-                        logger.info("**********Service  STAGE  foreach 3 *****************");
-                        logger.warn(dishesEntity.toString());
-                    }
-            );
-            logger.info("**********Service  STAGE  4 *****************");
             dishesRepository.save(dishesEntity);
-
-            logger.info("**********Service  STAGE  4 Dishes Saved *****************");
             orderCartEntity.addDishes(dishesEntity);
-            logger.warn("**********Service  STAGE  4 add dish " + dishesEntity.toString() + " to cart *****************");
+            logger.warn("**********Service  STAGE  add dish " + dishesEntity + " to cart *****************");
 //            }
 
 
@@ -145,4 +108,52 @@ public class CustomerService {
 
 
     }
+
+    public Dishes createDishes(Integer ID, String[] toppings) {
+        ToppingsMapper toppingsMapper = new ToppingsMapper();
+        FoodTypesMapper foodTypesMapper = new FoodTypesMapper();
+        List<Toppings> toppingsList = new ArrayList<>();
+        if (toppings != null) {
+            for (String topping : toppings) {
+                toppingsList.add(toppingsMapper.mapToppingsEntityToModel(toppingsRepository.findByName(topping)));
+            }
+        }
+        Dishes dishes = new Dishes(foodTypesMapper.mapFoodTypesEntityToModel(foodTypesRepository.findById(ID).get()));
+        dishes.setToppings(toppingsList);
+        return dishes;
+    }
+
+    public void registerNewCustomer(Customer customer) {
+
+        CustomersCredentialsEntity credentials = new CustomersCredentialsEntity();
+        CustomerEntity customerEntity = new CustomerEntity();
+        AuthGroupEntity authGroupEntity = new AuthGroupEntity();
+
+        authGroupEntity.setAuthgroup("CUSTOMER");
+        List<AuthGroupEntity> authGroupEntityList = new ArrayList<>();
+        authGroupEntityList.add(authGroupEntity);
+
+        authGroupEntity.setCustomersCredentialsEntity(credentials);
+
+        credentials.setUsername(customer.getUsername());
+        credentials.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
+        credentials.setAuthGroupEntityList(authGroupEntityList);
+        credentials.setCustomerEntity(customerEntity);
+
+
+        customerEntity.setName(customer.getName());
+        customerEntity.setSurname(customer.getSurname());
+        customerEntity.setMobile(customer.getMobile());
+        customerEntity.setHomeAddress(customer.getHomeAddress());
+        customerEntity.setDOB(customer.getDOB());
+        customerEntity.setEmail(customer.getEmail());
+        customerEntity.setCustomersCredentialsEntity(credentials);
+
+        logger.warn("********************Service. Customer to DB  " + customerEntity + "***************");
+
+        customersRepository.save(customerEntity);
+
+    }
 }
+
+

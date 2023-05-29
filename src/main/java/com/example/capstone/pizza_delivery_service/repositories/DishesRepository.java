@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DishesRepository extends JpaRepository<DishesEntity,Integer> {
 
-    //    List<DishesEntity> findDishesByToppingID(Long dishID);
+
 
 
 }
