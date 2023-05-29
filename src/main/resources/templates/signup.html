@@ -20,42 +20,42 @@
                         </div>
                         <div class="form-group">
                             <label aling="left" for="name">Name</label>
-                            <input type="text" class="form-control input-sm" id="name" th:field="*{name}">
+                            <input type="text" class="form-control-sm input-sm" id="name" th:field="*{name}">
                             <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Full name error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="surname">Lastname</label>
-                            <input type="text" class="form-control input-sm" id="surname" th:field="*{surname}">
+                            <input type="text" class="form-control-sm input-sm" id="surname" th:field="*{surname}">
                             <span class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">last name error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="mobile">Mobile</label>
-                            <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">
+                            <input type="tel" class="form-control-sm input-sm" id="mobile" th:field="*{mobile}">
                             <span class="error" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}">mobile error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="DOB">Date of birth</label>
-                            <input type="date" class="form-control input-sm" id="DOB" th:field="*{DOB}">
+                            <input type="date" class="form-control-sm input-sm" id="DOB" th:field="*{DOB}">
                             <span  class="error" th:if="${#fields.hasErrors('DOB')}" th:errors="*{DOB}">Date error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="email">Email</label>
-                            <input type="email" class="form-control input-sm" id="email" th:field="*{email}">
+                            <input type="email" class="form-control-sm input-sm" id="email" th:field="*{email}">
                             <span class="error"  th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="homeAddress">Delivery address</label>
-                            <input type="text" class="form-control input-sm" id="homeAddress" th:field="*{homeAddress}">
+                            <input type="text" class="form-control-sm input-sm" id="homeAddress" th:field="*{homeAddress}">
                             <span  class="error" th:if="${#fields.hasErrors('homeAddress')}" th:errors="*{homeAddress}">homeAddress error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="username">Login</label>
-                            <input type="text" class="form-control input-sm" id="username" th:field="*{username}">
+                            <input type="text" class="form-control-sm input-sm" id="username" th:field="*{username}">
                             <span  class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</span>
                         </div>
                         <div class="form-group">
                             <label aling="left" for="password">Password</label>
-                            <input type="password" class="form-control input-sm" id="password" th:field="*{password}">
+                            <input type="password" class="form-control-sm input-sm" id="password" th:field="*{password}">
                             <span  class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</span>
                         </div>
 
