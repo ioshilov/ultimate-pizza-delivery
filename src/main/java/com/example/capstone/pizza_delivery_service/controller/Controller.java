@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Controller
@@ -52,9 +53,11 @@ public class Controller {
         return "customers-view";
     }
 
-    @GetMapping(value = "/customers/{ID}")
+    @GetMapping(value = "/customers/{id}")
     public String getCustomerById(@PathVariable Integer id, Model model) {
-        model.addAttribute("customers", databaseService.findCustomerById(id));
+        List<Customer> customerList=new ArrayList<>();
+        customerList.add(databaseService.findCustomerById(id));
+        model.addAttribute("customers", customerList);
         return "credentials-view";
     }
 

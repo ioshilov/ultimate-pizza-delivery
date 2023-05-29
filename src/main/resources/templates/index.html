@@ -130,6 +130,7 @@
                                             <p th:text="${foodtype.description}" align="center"/>
                                     </div>
                                     <div class="col-12 col-sm-6">
+                                        <ul class="list-unstyled">
                                             <li th:each="toppings : ${toppingslist}" >
                                                 <label th:for="${toppings.name}" th:text="${toppings.name}">topping
                                                     name</label>
@@ -138,6 +139,7 @@
                                                        th:value="${toppings.name}"/>
                                                 <br>
                                             </li>
+                                        </ul>
                                             <input class="btn btn-primary btn-sm" type="submit"   value="Add to cart">
 
 

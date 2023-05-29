@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@SessionScope
-@Component
 public class CustomerService {
 
     Logger logger = LoggerFactory.getLogger(Controller.class);

@@ -53,7 +53,7 @@ CREATE TABLE orders (
 
 CREATE TABLE foodtypes (
 	id serial PRIMARY KEY,
-	name VARCHAR ( 20 ) NOT NULL,
+	name VARCHAR ( 50 ) NOT NULL,
 	price decimal NOT NULL,
 	description VARCHAR (200) NOT NULL,
 	image bytea
@@ -143,16 +143,16 @@ VALUES
 
 
 INSERT INTO foodtypes (name,price,description) VALUES
-('Pizza margarita',1300, 'just default pizza'),
-('Pizza Pepperoni',1600,'just default pizza2'),
-('Pizza Diablo',2200,'just default pizza3'),
-('Pizza Napoli',2500,'just default pizza4'),
 ('Pizza Pepperoni',1500, 'Savoury pepperoni, homestyle sauce, and ooey-gooey, stretchy mozzarella'),
 ('Pizza Buffalo chicken',1850, 'BBQ Chicken, red onions, parmesan cheese on a Buffalo sauce base. '),
 ('Pizza Meat supreme',2500, 'Classic pepperoni, bacon crumble, salami, spicy Italian sausage, mozzarella cheese '),
 ('Pizza Vegetarian',1230, 'Mozzarella cheese, our signature tomato sauce, mushroom, onion, peppers, cherry tomatoes.'),
 ('Pizza Europa pizza',2400, 'Sun-dried tomato, goat cheese, fresh basil and mozzarella.'),
-('Pizza Hawaiian pizza',1500, 'Ham and pineapple.');
+('Pizza Hawaiian pizza',1500, 'Ham and pineapple.'),
+('Pizza margarita',1300, 'just default pizza'),
+('Pizza Pepperoni',1600,'just default pizza2'),
+('Pizza Diablo',2200,'just default pizza3'),
+('Pizza Napoli',2500,'just default pizza4');
 
 
 

@@ -14,8 +14,6 @@ import org.springframework.web.context.annotation.SessionScope;
 import java.util.List;
 
 @Service
-@SessionScope
-@Component
 public class DatabaseService {
 
     @Autowired
