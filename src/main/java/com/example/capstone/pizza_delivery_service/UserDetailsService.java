@@ -36,25 +36,13 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-//        String username = username_test;
-//        List<CustomersCredentialsEntity> list = customersCredentialsRepository.findAll();
-//
-//        Optional<CustomersCredentialsEntity> user = list.stream().filter(x -> x.getUsername().equals(username)).findFirst();
-
-            CustomersCredentialsEntity user = this.customersCredentialsRepository.findByUsername(username);
-            Integer id=user.getCustomerid();
+            CustomersCredentialsEntity user = customersCredentialsRepository.findByUsername(username);
 
         if (user==null) {
             throw new UsernameNotFoundException("cannot find username: " + username);
+
         }
-//        List<AuthGroupEntity> listAuth = authGroupRepository.findAll();
-//        List<AuthGroupEntity> authGroups = listAuth.stream().filter(x -> x.getUsername().equals(username)).toList();
-
-        String encodedPassword = new BCryptPasswordEncoder().encode("BOBDYLAN");
-//        user.setPassword(encodedPassword);
-        logger.info(encodedPassword);
-
-            List<AuthGroupEntity> authGroups = this.authGroupRepository.findAllByid(id);
+            List<AuthGroupEntity> authGroups = authGroupRepository.findAllBycustomerscredentialsid(user.getId());
         return new UserPrincipal(user, authGroups);
     }
 }

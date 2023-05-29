@@ -46,4 +46,9 @@ public class ToppingsEntity {
     public int hashCode() {
         return Objects.hash(id, name, price, dishesEntitySet);
     }
+
+    @Override
+    public String toString() {
+        return  name;
+    }
 }

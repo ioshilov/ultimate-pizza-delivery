@@ -14,12 +14,14 @@ public class AuthGroupEntity {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @Column (name="usernameauth",nullable = false)
-//    private String usernameauth;
+
     @Column (name="authgroup",nullable = false)
     private String authgroup;
 
-    @NotNull
+    @Column (name="customerscredentialsid",nullable = false,insertable=false, updatable=false)
+    private Integer customerscredentialsid;
+
+
     @ManyToOne (optional=false, cascade=CascadeType.ALL)
     @JoinColumn(name = "customerscredentialsid")
     private CustomersCredentialsEntity customersCredentialsEntity;

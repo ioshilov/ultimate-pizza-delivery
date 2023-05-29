@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -51,4 +52,13 @@ public class DishesEntity {
     public int hashCode() {
         return Objects.hash(dishesID, foodTypesEntity, toppingsEntitySet);
     }
+
+    @Override
+    public String toString() {
+        if (toppingsEntitySet.isEmpty()){return foodTypesEntity.getName();}
+
+        return foodTypesEntity.getName() +" + toppings:"+ toppingsEntitySet.stream().map(Object::toString).collect(Collectors.joining(","));
+    }
 }
+
+

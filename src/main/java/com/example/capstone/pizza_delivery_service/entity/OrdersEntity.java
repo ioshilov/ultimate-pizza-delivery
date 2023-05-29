@@ -22,7 +22,8 @@ public class OrdersEntity {
     @OneToOne(mappedBy = "ordersEntity")
     private OrderDetailsEntity orderDetailsEntity;
 
-
+    @Column(name="customerid")
+    private Integer customerid;
     @Column(name="sum")
     private BigDecimal sum;
     @Column(name="date")

@@ -47,4 +47,11 @@ public class FoodTypesEntity {
     public int hashCode() {
         return Objects.hash(id, name, price, description);
     }
+
+    @Override
+    public String toString() {
+        return "FoodTypesEntity{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

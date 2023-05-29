@@ -20,11 +20,11 @@
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link" th:classappend="${module == 'customers' ? 'active' : ''}" href="#"
-                           th:href="@{/customers}">Customers</a>
+                           th:href="@{/customers}" sec:authorize="hasAuthority('ADMIN')">Customers</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:classappend="${module == 'orders' ? 'active' : ''}" href="#"
-                           th:href="@{/orders}">Orders</a>
+                           th:href="@{/orders}" sec:authorize="hasAuthority('ADMIN')">Orders</a>
                     </li>
 
                 </ul>
@@ -32,7 +32,7 @@
                 <div class="nav-item" style="color:white;">
                     <div sec:authorize="!isAuthenticated()"><strong>Welcome dear guest!</strong></div>
                     <div sec:authorize="isAuthenticated()">
-                        <strong> Welcome: <span sec:authentication="name"></span> </strong>
+                        <strong> Welcome: <b sec:authentication="name"></b> </strong>
                     </div>
                 </div>
             </div>
@@ -52,70 +52,72 @@
 
 
             <div sec:authorize="isAnonymous()">
-                <a class="btn btn-primary text-nowrap"  data-target="#signupmodal" data-toggle="modal">Sign up</a>
+                <a class="btn btn-primary text-nowrap" href="#"  th:href="@{/signup}"  >Sign up</a>
             </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="signupmodal" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Your order</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                 <form id="signupForm" action="#" th:action="@{/signup}" th:object="${customer}"
-                                      method="post">
-                                    <div class="form-group">
-                                        <label aling="left" for="name">Name</label>
-                                        <input type="text" class="form-control input-sm" id="name" th:field="*{name}">
-                                    </div>
-                                     <div class="form-group">
-                                         <label aling="left" for="surname">Lastname</label>
-                                         <input type="text" class="form-control input-sm" id="surname" th:field="*{surname}">
-                                     </div>
-                                    <div class="form-group">
-                                        <label aling="left" for="mobile">Mobile</label>
-                                        <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">
-                                    </div>
-                                     <div class="form-group">
-                                         <label aling="left" for="DOB">Date of birth</label>
-                                         <input type="date" class="form-control input-sm" id="DOB" th:field="*{DOB}">
-                                     </div>
-                                     <div class="form-group">
-                                         <label aling="left" for="email">Email</label>
-                                         <input type="email" class="form-control input-sm" id="email" th:field="*{email}">
-                                     </div>
-                                    <div class="form-group">
-                                        <label aling="left" for="homeAddress">Delivery address</label>
-                                        <input type="text" class="form-control input-sm" id="homeAddress" th:field="*{homeAddress}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label aling="left" for="username">Login</label>
-                                        <input type="text" class="form-control input-sm" id="username" th:field="*{username}">
-                                    </div>
-                                     <div class="form-group">
-                                         <label aling="left" for="password">Password</label>
-                                         <input type="password" class="form-control input-sm" id="password" th:field="*{password}">
-                                     </div>
+<!--                <div class="modal fade" id="signupmodal" tabindex="-1" role="dialog"-->
+<!--                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                    <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--                        <div class="modal-content">-->
+<!--                            <div class="modal-header">-->
+<!--                                <h5 class="modal-title" id="exampleModalLongTitle">Your order</h5>-->
+<!--                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                    <span aria-hidden="true">&times;</span>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                            <div class="modal-body">-->
+<!--                                 <form id="signupForm" action="#" th:action="@{/signup}" th:object="${customer}"-->
+<!--                                      method="post">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label aling="left" for="name">Name</label>-->
+<!--                                        <input type="text" class="form-control input-sm" id="name" th:field="*{name}">-->
+<!--                                    </div>-->
+<!--                                     <div class="form-group">-->
+<!--                                         <label aling="left" for="surname">Lastname</label>-->
+<!--                                         <input type="text" class="form-control input-sm" id="surname" th:field="*{surname}">-->
+<!--                                     </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label aling="left" for="mobile">Mobile</label>-->
+<!--                                        <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">-->
+<!--                                    </div>-->
+<!--                                     <div class="form-group">-->
+<!--                                         <label aling="left" for="DOB">Date of birth</label>-->
+<!--                                         <input type="date" class="form-control input-sm" id="DOB" th:field="*{DOB}">-->
+<!--                                     </div>-->
+<!--                                     <div class="form-group">-->
+<!--                                         <label aling="left" for="email">Email</label>-->
+<!--                                         <input type="email" class="form-control input-sm" id="email" th:field="*{email}">-->
+<!--                                     </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label aling="left" for="homeAddress">Delivery address</label>-->
+<!--                                        <input type="text" class="form-control input-sm" id="homeAddress" th:field="*{homeAddress}">-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label aling="left" for="username">Login</label>-->
+<!--                                        <input type="text" class="form-control input-sm" id="username" th:field="*{username}">-->
+<!--                                    </div>-->
+<!--                                     <div class="form-group">-->
+<!--                                         <label aling="left" for="password">Password</label>-->
+<!--                                         <input type="password" class="form-control input-sm" id="password" th:field="*{password}">-->
+<!--                                     </div>-->
 
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <input class="btn btn-primary" form="signupForm" type="submit"
-                                       value="Sign up">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                            <div class="modal-footer">-->
+<!--                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                                <input class="btn btn-primary" form="signupForm" type="submit"-->
+<!--                                       value="Sign up">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"></script>
+
+
 
     </body>
 </header>

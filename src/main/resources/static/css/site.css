@@ -21,3 +21,8 @@ li {
 
 html,html *{box-sizing: border-box !important;}
 
+span {
+    color: red;
+    font-style: italic;
+    font-size: 75%;
+}

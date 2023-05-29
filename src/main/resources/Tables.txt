@@ -19,7 +19,7 @@ CREATE TABLE customers (
    id serial PRIMARY KEY,
    name VARCHAR ( 50 ) NOT NULL,
    surname VARCHAR ( 50 ),
-   mobile VARCHAR ( 15) NOT NULL,
+   mobile VARCHAR ( 20) NOT NULL,
    dob DATE NOT NULL,
    email VARCHAR ( 50 ) NOT NULL,
    homeaddress VARCHAR ( 200 ) NOT NULL
@@ -27,8 +27,8 @@ CREATE TABLE customers (
 
 CREATE TABLE customerscredentials (
 	id serial PRIMARY KEY,
-	customerid INT UNIQUE NOT NULL,
-	username VARCHAR (50) UNIQUE NOT NULL,
+	customerid INT NOT NULL,
+	username VARCHAR (20) UNIQUE NOT NULL,
 	password VARCHAR (100) NOT NULL,
 	FOREIGN KEY (customerid)
       REFERENCES customers (id)
@@ -36,8 +36,7 @@ CREATE TABLE customerscredentials (
 
 CREATE TABLE authusergroup (
 	id serial  PRIMARY KEY,
-	customerscredentialsid INT NOT NULL,
-	usernameauth VARCHAR (50) NOT NULL,
+	customerscredentialsid INT ,
 	authgroup VARCHAR (50) NOT NULL,
 	FOREIGN KEY (customerscredentialsid)
       REFERENCES customerscredentials (id)
@@ -123,28 +122,21 @@ CREATE TABLE payments (
 
 
 INSERT INTO customers (name, surname,mobile,dob,email,homeaddress)
-VALUES('BOB','DYLAN',+77011112233,'2022-06-01','BOBDYLAN@GMAIL.COM','BOBDYLANS HOME ADDEESS'),
-('SPANCH','BOB',+77012223344,'2023-07-02','SBOB@GMAIL.COM','SBOBS PINEAPPLE'),
-('BEN','AFFLEK',+77013334455,'2023-02-11','Bafflek@GMAIL.COM','Bens home address'),
-('Natalie','Portman',+77014445566,'2021-12-12','Nportman@GMAIL.COM','Natas home address');
+VALUES('BOB','DYLAN',+77011112233,'2022-06-01','BOBDYLAN@GMAIL.COM','BOBDYLANS HOME ADDEESS');
 
 
 INSERT INTO customerscredentials (customerid, username,password)
 VALUES
-('1','BOBDYLAN','$2a$10$v2qtFXNMtty347.iYAVu1.94T.Hk1L19jFHWis4EjExx.Jh7S0fWa'),
-('2','SBOB','SBPASSWORD'),
-('3','BAFFLEK','BAPASSWORD'),
-('4','NPortman','NPPASSWORD')
+('1','BOBDYLAN','$2a$10$v2qtFXNMtty347.iYAVu1.94T.Hk1L19jFHWis4EjExx.Jh7S0fWa')
+
 ;
 
 
-INSERT INTO authusergroup (customerscredentialsid,usernameauth,authgroup)
+INSERT INTO authusergroup (customerscredentialsid,authgroup)
 VALUES
-(1,'BOBDYLAN','ADMIN'),
-(1,'BOBDYLAN','CUSTOMER'),
-(2,'SBOB','CUSTOMER'),
-(3,'BAFFLEK','CUSTOMER'),
-(4,'NPortman','CUSTOMER');
+(1,'ADMIN'),
+(1,'CUSTOMER');
+
 
 
 INSERT INTO foodtypes (name,price,description) VALUES

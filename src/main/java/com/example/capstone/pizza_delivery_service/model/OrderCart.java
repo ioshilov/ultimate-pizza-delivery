@@ -16,6 +16,8 @@ import java.util.List;
 
 public class OrderCart {
 
+    private boolean isEmpty=true;
+
 
    private List<Dishes> dishesList=new ArrayList<>();
 
@@ -25,10 +27,12 @@ public class OrderCart {
 
     public void addDishes (Dishes dishes){
         dishesList.add(dishes);
+        checkIfEmpty();
     }
 
     public void deleteDishes(int ID){
         dishesList.remove(ID);
+        checkIfEmpty();
     }
 
     @Override
@@ -36,5 +40,13 @@ public class OrderCart {
         return "OrderCart{" +
                 "dishesList=" + dishesList +
                 '}';
+    }
+
+    public void checkIfEmpty() {
+        if (dishesList.isEmpty()) {
+            setEmpty(true);
+        } else {
+            setEmpty(false);
+        }
     }
 }

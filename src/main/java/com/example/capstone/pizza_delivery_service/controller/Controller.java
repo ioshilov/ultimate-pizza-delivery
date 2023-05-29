@@ -1,26 +1,24 @@
 package com.example.capstone.pizza_delivery_service.controller;
 
 
-import com.example.capstone.pizza_delivery_service.entity.AuthGroupEntity;
-import com.example.capstone.pizza_delivery_service.entity.CustomerEntity;
-import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEntity;
-import com.example.capstone.pizza_delivery_service.entity.FoodTypesEntity;
+import com.example.capstone.pizza_delivery_service.entity.*;
 import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
 import com.example.capstone.pizza_delivery_service.mapper.ToppingsMapper;
 import com.example.capstone.pizza_delivery_service.model.*;
-import com.example.capstone.pizza_delivery_service.repositories.CustomersCredentialsRepository;
-import com.example.capstone.pizza_delivery_service.repositories.CustomersRepository;
-import com.example.capstone.pizza_delivery_service.repositories.FoodTypesRepository;
-import com.example.capstone.pizza_delivery_service.repositories.ToppingsRepository;
+import com.example.capstone.pizza_delivery_service.repositories.*;
 import com.example.capstone.pizza_delivery_service.service.CustomerService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +34,9 @@ public class Controller {
     private  CustomersRepository customersRepository;
     @Autowired
     private  FoodTypesRepository foodTypesRepository;
+
+    @Autowired
+    private OrdersRepository ordersRepository;
 
     @Autowired
     private CustomersCredentialsRepository customersCredentialsRepository;
@@ -61,23 +62,39 @@ public class Controller {
     @GetMapping(value={"/", "/index"})
     public String getHomePage(Model model){
 
-        logger.error("********************INDEX*****************");
+        logger.info("********************INDEX*****************");
         List< FoodTypesEntity> foodTypesEntities =foodTypesRepository.findAll();
          model.addAttribute("foodtypes",foodTypesEntities);
         model.addAttribute("toppingslist",toppingsRepository.findAll().stream().map(x->new Toppings(x.getName(),x.getPrice())).toList());
         model.addAttribute("dishes",orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("customer", customer);
-
-        logger.error("********************Your cart is full of " + orderCart.toString());
+        model.addAttribute("orderCart",orderCart);
+        logger.warn("********************Your cart is full of " + orderCart.getDishesList().toString());
         return "index";
     }
-//    @GetMapping(value = "/customers")
-//    public String getAll (Model model){
-//        List<Customer> customers= customerService.getAllCustomers();
-//        model.addAttribute("customers",customers);
-//    return "guests-view";
-//    }
+    @GetMapping(value = "/customers")
+    public String getAll (Model model){
+        List<Customer> customers= customerService.getAllCustomers();
+        model.addAttribute("customers",customers);
+    return "guests-view";
+    }
+
+    @GetMapping(value = "/customers/{ID}")
+    public String getCustomerById (@PathVariable Integer ID,Model model){
+        CustomerEntity customer= customersRepository.findById(ID).get();
+        model.addAttribute("customers",customer);
+        return "credentials-view";
+    }
+
+    @GetMapping(value = "/orders")
+    public String getAllOrders (Model model){
+        List<OrdersEntity> ordersEntityList= ordersRepository.findAll();
+        model.addAttribute("orders",ordersEntityList);
+        return "orders-view";
+    }
+
+
 
     @GetMapping(value = "/delete/{ID}")
     public String deleteFromCart (@PathVariable Integer ID){
@@ -88,10 +105,12 @@ public class Controller {
     }
 
     @PostMapping(value= "/pay")
-    public String addToCart ( @ModelAttribute(value = "orderDetails") OrderDetails orderDetails){
-        logger.error("*************Testing payment**************");
+    public String addToCart ( @ModelAttribute(value = "orderDetails") OrderDetails orderDetails, @AuthenticationPrincipal UserPrincipal user){
+        logger.info("*************Testing payment**************");
         logger.error(orderDetails.toString());
-        customerService.createOrder(orderCart,orderDetails);
+        if (orderCart.getDishesList().isEmpty()) {return "redirect:/";}
+
+        customerService.createOrder(orderCart,orderDetails,user);
         orderCart=new OrderCart();
         return "redirect:/";
     }
@@ -99,7 +118,7 @@ public class Controller {
 
     @PostMapping(value= "/addtocart/{ID}")
     public String addToCart (@PathVariable Integer ID, @RequestParam(value = "topping" , required = false) String[] toppings){
-        logger.error("******************** TEST CART *****************");
+        logger.info("******************** TEST CART *****************");
         ToppingsMapper toppingsMapper=new ToppingsMapper();
         FoodTypesMapper foodTypesMapper=new FoodTypesMapper();
         List<Toppings> toppingsList=new ArrayList<>();
@@ -113,21 +132,37 @@ public class Controller {
         orderCart.addDishes(dishes);
         logger.error("added to cart "+ dishes);
         logger.error("price "+ dishes.getSum());
-        logger.error("******************** TEST CART ENDS *****************");
+        logger.info("******************** TEST CART ENDS *****************");
         return  "redirect:/";
     }
 
     @GetMapping(value = "/showordercart")
     public String showCart (Model model){
-        logger.error("******************** CART SHOW *****************");
-//        orderCart.getDishesList().stream().forEach(x->logger.error(x.toString()));
+        logger.info("******************** CART SHOW *****************");
         model.addAttribute("dishes",orderCart.getDishesList());
         logger.error("******************** CART SHOW ENDS*****************");
         return  "ordercart";
     }
 
     @PostMapping(value = "/signup")
-    public String getCustomerCredentials ( @ModelAttribute(value = "customer") Customer customer){
+    public String signUpNewUser (@Valid @ModelAttribute(value = "customer")Customer customer, BindingResult bindingResult, Model model){
+
+        if (bindingResult.hasErrors()) {
+            logger.error("*************FORM ERRORRR********************");
+            model.addAttribute("customer",customer);
+            model.addAttribute("name",customer.getName());
+            model.addAttribute("surname",customer.getSurname());
+            model.addAttribute("mobile",customer.getMobile());
+            model.addAttribute("homeAddress",customer.getHomeAddress());
+            model.addAttribute("email",customer.getEmail());
+            model.addAttribute("username",customer.getSurname());
+            model.addAttribute("password",customer.getPassword());
+            model.addAttribute("DOB",customer.getDOB());
+
+            return "signup";
+        }
+
+
         CustomersCredentialsEntity customersCredentialsEntityFromDatabase=customersCredentialsRepository.findByUsername(customer.getUsername());
         if (customersCredentialsEntityFromDatabase!=null) return "error";
 
@@ -139,7 +174,7 @@ public class Controller {
         List<AuthGroupEntity> authGroupEntityList=new ArrayList<>();
         authGroupEntityList.add(authGroupEntity);
 
-        logger.error("******************** Customer2DB"+ authGroupEntityList+"***************");
+        logger.warn("******************** Customer2DB  "+ authGroupEntityList.toString()+"***************");
 
         authGroupEntity.setCustomersCredentialsEntity(customersCredentialsEntity);
 
@@ -149,7 +184,7 @@ public class Controller {
         customersCredentialsEntity.setCustomerEntity(customerEntity);
 //        customersCredentialsEntity.setCustomerid(customerEntity.getId());
 
-        logger.error("******************** Customer2DB"+ customersCredentialsEntity+"***************");
+        logger.warn("******************** Customer2DB  "+ customersCredentialsEntity+"***************");
 
         customerEntity.setName(customer.getName());
         customerEntity.setSurname(customer.getSurname());
@@ -159,11 +194,11 @@ public class Controller {
         customerEntity.setEmail(customer.getEmail());
         customerEntity.setCustomersCredentialsEntity(customersCredentialsEntity);
 
-        logger.error("******************** Customer2DB"+ customerEntity+"***************");
+        logger.warn("******************** Customer2DB  "+ customerEntity+"***************");
 
         customersRepository.save(customerEntity);
 
-
+        logger.warn("**********New customer signed in*********");
         return "redirect:/";
     }
 
@@ -172,6 +207,11 @@ public class Controller {
     public String getlogin(Model model){
         model.addAttribute("customer", customer);
         return "login";
+    }
+    @GetMapping(value = "/signup")
+    public String getSignup(Model model){
+        model.addAttribute("customer", customer);
+        return "signup";
     }
 
 

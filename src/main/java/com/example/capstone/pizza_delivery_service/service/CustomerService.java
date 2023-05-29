@@ -2,10 +2,7 @@ package com.example.capstone.pizza_delivery_service.service;
 
 import com.example.capstone.pizza_delivery_service.controller.Controller;
 import com.example.capstone.pizza_delivery_service.entity.*;
-import com.example.capstone.pizza_delivery_service.model.Customer;
-import com.example.capstone.pizza_delivery_service.model.Dishes;
-import com.example.capstone.pizza_delivery_service.model.OrderCart;
-import com.example.capstone.pizza_delivery_service.model.OrderDetails;
+import com.example.capstone.pizza_delivery_service.model.*;
 import com.example.capstone.pizza_delivery_service.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +24,8 @@ import java.util.stream.Collectors;
 public class CustomerService {
 
     Logger logger = LoggerFactory.getLogger(Controller.class);
+    @Autowired
+    private CustomersCredentialsRepository customersCredentialsRepository;
     private final CustomersRepository customersRepository;
     @Autowired
     private OrdersRepository ordersRepository;
@@ -45,31 +44,43 @@ public class CustomerService {
     private FoodTypesRepository foodTypesRepository;
 
 
-
-
     public CustomerService(CustomersRepository customersRepository) {
         this.customersRepository = customersRepository;
     }
 
-//    public List<Customer> getAllCustomers() {
-//
-//        return customersRepository.findAll().stream().map(x -> new Customer(x.getId(), x.getName(), x.getSurname(), x.getMobile(), x.getDOB(), x.getEmail(), x.getHomeAddress())).collect(Collectors.toList());
-//    }
-//
-//    public Customer getCustomerCredentialsbyID() {
-//        return customersRepository.findById(1).stream().map(x -> new Customer(x.getId(), x.getName(), x.getSurname(), x.getMobile(), x.getDOB(), x.getEmail(), x.getHomeAddress())).limit(1).findFirst().get();
-//
-//    }
+    public List<Customer> getAllCustomers() {
 
-    public void createOrder(OrderCart orderCart, OrderDetails orderDetails) {
+        return customersRepository.findAll().stream().map(x -> new Customer(x.getId(),
+                x.getName(),
+                x.getSurname(),
+                x.getMobile(),
+                x.getDOB(),
+                x.getEmail(),
+                x.getHomeAddress(),
+                x.getCustomersCredentialsEntity().getUsername(),
+                x.getCustomersCredentialsEntity().getPassword(),
+                x.getCustomersCredentialsEntity().getAuthGroupEntityList().stream().map(AuthGroupEntity::getAuthgroup).collect(Collectors.toList()))).collect(Collectors.toList());
+    }
+
+    public Customer getAllOrders() {
+        List<OrdersEntity> ordersEntityList = ordersRepository.findAll();
+//ordersEntityList.stream().map(x->x.getOrderDetailsEntity().getOrderCartEntity().)
+
+        return null;
+
+    }
+
+    public void createOrder(OrderCart orderCart, OrderDetails orderDetails, UserPrincipal user) {
         OrdersEntity ordersEntity = new OrdersEntity();
         ordersEntity.setLocalDate(LocalDate.now());
         ordersEntity.setSum(orderCart.getDishesList().stream().map(Dishes::getSum).reduce(BigDecimal.ZERO, BigDecimal::add));
+
+        if(user!=null){ordersEntity.setCustomerid(customersCredentialsRepository.findByUsername(user.getUsername()).getCustomerid());}
         ordersRepository.save(ordersEntity);
         Integer ordersEntityID = ordersEntity.getId();
         logger.info("ORDER ID =" + ordersEntityID.toString());
-        logger.error("**********Service  Before Cart fill *****************");
-        OrderCartEntity orderCartEntity= fillOrderCartWithDishesAndSave(orderCart);
+        logger.info("**********Service  Before Cart fill *****************");
+        OrderCartEntity orderCartEntity = fillOrderCartWithDishesAndSave(orderCart);
 
         OrderDetailsEntity orderDetailsEntity = new OrderDetailsEntity();
         orderDetailsEntity.setDeliveryName(orderDetails.getName());
@@ -81,58 +92,49 @@ public class CustomerService {
         orderDetailsEntity.setOrdersEntity(ordersEntity);
         orderDetailsRepository.save(orderDetailsEntity);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-
-        if (!auth.getPrincipal().toString().equals("anonymousUser")){
-        logger.error("**********Customer: "+ auth.getPrincipal()+"*****************");}
-        else logger.error("**********Customer anonymous  *****************");
-
-        logger.error("**********Service  VICTORY Order details saved *****************");
+        logger.info("**********Service  VICTORY Order details saved *****************");
 
     }
 
     public OrderCartEntity fillOrderCartWithDishesAndSave(OrderCart orderCart) {
-        logger.error("**********Service  Topping repo *****************");
         List<ToppingsEntity> toppingsEntityList = toppingsRepository.findAll();
-        logger.error("**********Service  Dishes repo *****************");
-        logger.error("**********Service  STAGE  1 *****************");
-        OrderCartEntity orderCartEntity=new OrderCartEntity();
+        logger.info("**********Service  STAGE  1 *****************");
+        OrderCartEntity orderCartEntity = new OrderCartEntity();
 
         for (var dish : orderCart.getDishesList()
         ) {
 
-//            if (dish.getToppings() != null) {
-                logger.error("**********Service  STAGE  2 *****************");
-                DishesEntity dishesEntity=new DishesEntity();
-                String foodname=dish.getFoodType().getName();
-                FoodTypesEntity foodTypesEntity=foodTypesRepository.findByName(foodname);
-                dishesEntity.setFoodTypesEntity(foodTypesEntity);
-                logger.error("**********"+foodTypesRepository.findByName(dish.getFoodType().getName())+ " *****************");
-                logger.error("**********Service  STAGE  3 *****************");
-                dish.getToppings().forEach(x -> {
-                            logger.error("**********Service  STAGE  foreach 1 *****************");
-                    ToppingsEntity toppingsEntity = toppingsEntityList.stream().filter(topping -> topping.getName().equals(x.getName())).findFirst().get();
-                            logger.error(toppingsEntity.getName());
-                            logger.error("**********Service  STAGE  foreach 2 *****************");
+            logger.info("**********Service  STAGE  2 *****************");
+            DishesEntity dishesEntity = new DishesEntity();
+            String foodname = dish.getFoodType().getName();
+            FoodTypesEntity foodTypesEntity = foodTypesRepository.findByName(foodname);
+            dishesEntity.setFoodTypesEntity(foodTypesEntity);
+            logger.warn("**********" + foodTypesRepository.findByName(dish.getFoodType().getName()).getName() + " *****************");
+            logger.info("**********Service  STAGE  3 *****************");
+            dish.getToppings().forEach(x -> {
+                        logger.info("**********Service  STAGE  foreach 1 *****************");
+                        ToppingsEntity toppingsEntity = toppingsEntityList.stream().filter(topping -> topping.getName().equals(x.getName())).findFirst().get();
+                        logger.warn(toppingsEntity.getName());
+                        logger.info("**********Service  STAGE  foreach 2 *****************");
 
-                            dishesEntity.addToppings(toppingsEntity);
-                            logger.error("**********Service  STAGE  foreach 3 *****************");
-                            logger.error(dishesEntity.toString());
-                }
-                );
-                logger.error("**********Service  STAGE  4 *****************");
-                 dishesRepository.save(dishesEntity);
+                        dishesEntity.addToppings(toppingsEntity);
+                        logger.info("**********Service  STAGE  foreach 3 *****************");
+                        logger.warn(dishesEntity.toString());
+                    }
+            );
+            logger.info("**********Service  STAGE  4 *****************");
+            dishesRepository.save(dishesEntity);
 
-                logger.error("**********Service  STAGE  4 Dishes Saved *****************");
-                orderCartEntity.addDishes(dishesEntity);
-            logger.error("**********Service  STAGE  4 add dish " + dishesEntity + " to cart *****************");
+            logger.info("**********Service  STAGE  4 Dishes Saved *****************");
+            orderCartEntity.addDishes(dishesEntity);
+            logger.warn("**********Service  STAGE  4 add dish " + dishesEntity.toString() + " to cart *****************");
 //            }
 
 
         }
         orderCartRepository.save(orderCartEntity);
-        logger.error("**********Service  VICTORY *****************");
+        logger.info("**********Service  VICTORY *****************");
         return orderCartEntity;
 
 

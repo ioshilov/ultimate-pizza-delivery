@@ -14,7 +14,7 @@
             <div align="center" class="col py-6">
 
                 <!-- MODAL BUTTON -->
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
+                <button type="button" class="btn btn-primary btn-block" th:disabled="${orderCart.isEmpty eq true}" data-toggle="modal"
                         data-target="#exampleModalCenter">
                     Open cart
                 </button>
@@ -26,13 +26,13 @@
                         <div class="modal-content">
 
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Your order</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Sign up</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <table class="table table-striped w-auto" align="center">
+                                <table class="table-sm  table-striped w-auto small " align="center">
                                     <thead class="ttop">
                                     <tr class="table-info">
                                         <td width="20px"><b> №</b></td>
@@ -42,7 +42,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="dish,iter : ${dishes}" class="display-6">
+                                    <tr th:each="dish,iter : ${dishes}" class="display-8">
                                         <td th:text=${iter.index}+1>Num</td>
                                         <td th:text="${dish.description}">Food</td>
                                         <td th:text="${dish.sum}">Price</td>
@@ -134,7 +134,7 @@
                                                        th:value="${toppings.name}"/>
                                                 <br>
                                             </li>
-                                            <input class="btn btn-primary btn-sm" type="submit" value="Add to cart">
+                                            <input class="btn btn-primary btn-sm" type="submit"   value="Add to cart">
                                         </td>
                                     </tr>
                                 </table>

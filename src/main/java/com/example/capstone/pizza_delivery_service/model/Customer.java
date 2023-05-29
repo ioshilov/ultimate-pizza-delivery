@@ -1,13 +1,17 @@
 package com.example.capstone.pizza_delivery_service.model;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @SessionScope
@@ -16,23 +20,51 @@ import java.time.LocalDate;
 @Setter
 public class Customer{
 
-      private Integer id;
-    private String name;
-    private String surname;
+    private Integer id;
 
+    @Size(min=2, max=50)
+    @NotEmpty(message = "Name is required")
+    private String name;
+    @Size(min=2, max=50)
+    @NotEmpty(message = "Lastname is required")
+    private String surname;
+    @Size(min=2, max=20, message = "Mobile number must be less 20 digits")
+    @NotEmpty
+    @Pattern(regexp = "^[0-9]*$", message = "Phone number must only be digits")
     private String mobile;
 
+//    @DateTimeFormat (pattern = "yyyy-mm-dd")
+    @NotNull (message = "Date of birth is required")
+    @Past(message = "Date of birth must be in past")
     private LocalDate DOB;
-
+    @Size(min=5, max=50)
+    @NotEmpty (message = "Email is required")
+    @Email(message = "Please enter a valid e-mail address")
     private String email;
-
+    @NotEmpty(message = "Home address is required")
+    @Size(min=5, max=200, message = "Home address must be less 200 symbols")
     private String homeAddress;
-
+    @NotEmpty(message = "Username is required")
+    @Size(min=5, max=20, message = "Username must be less 20 symbols")
     private String username;
 
+    @NotEmpty(message = "Password is required")
+    @Size(min=5, max=20, message = "Password must be more than 5 and less 20 symbols")
     private String password;
 
+    private List<String> roles;
 
-
+    public Customer(Integer id, String name, String surname, String mobile, LocalDate DOB, String email, String homeAddress, String username, String password, List<String> roles) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.mobile = mobile;
+        this.DOB = DOB;
+        this.email = email;
+        this.homeAddress = homeAddress;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
 }
 
