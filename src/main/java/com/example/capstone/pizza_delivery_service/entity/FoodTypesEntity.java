@@ -3,6 +3,7 @@ package com.example.capstone.pizza_delivery_service.entity;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.*;
+import javassist.bytecode.ByteArray;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,9 @@ public class FoodTypesEntity {
     @NotNull
     @Column(name="description")
     private String description;
+
+    @Column(name="image")
+    private byte[] image;
 
     @OneToMany (mappedBy = "foodTypesEntity",fetch = FetchType.EAGER)
     private List<DishesEntity> dishesEntity;

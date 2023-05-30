@@ -21,7 +21,7 @@
 
 <!--                        BACKUP SIGN-->
 
-                        <img class="card-img-top" th:src="@{/images/marg.jpg}" alt="Card image cap">
+                        <img class="card-img-top" th:src="@{/images/}+${foodtype.id}+'.jpg'" alt="Card image cap">
                         <div class="card-body">
                             <form action="#" th:action="@{/addtocart/}+${foodtype.id}" method="post">
                                 <div class="row">

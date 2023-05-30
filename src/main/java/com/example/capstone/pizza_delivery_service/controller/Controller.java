@@ -40,6 +40,7 @@ public class Controller {
         this.customer = customer;
         this.orderCart = orderCart;
         this.orderDetails = orderDetails;
+
     }
 
     @GetMapping(value = {"/", "/index"})
@@ -53,6 +54,7 @@ public class Controller {
         model.addAttribute("customer", customer);
         model.addAttribute("orderCart", orderCart);
         logger.warn("********************Your cart is full of " + orderCart.getDishesList().toString());
+        databaseService.loadImages();
         return "index";
     }
 
