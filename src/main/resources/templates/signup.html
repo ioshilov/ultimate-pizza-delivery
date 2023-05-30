@@ -9,54 +9,54 @@
 </head>
 <body>
 <div layout:fragment="content">
-<div class="container" align="center">
+<div class="container"align="center" >
 
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 18rem;" align="left">
                     <div class="col-md-auto">
                     <form id="signupForm" action="#" th:action="@{/signup}" th:object="${customer}"
                           method="post">
-                        <div class="form-group" aling="center">
+                        <div class="form-group" >
                             <h2>Sign up!</h2>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="name">Name</label>
-                            <input type="text" class="form-control-sm input-sm" id="name" th:field="*{name}">
+                            <label  class="control-label small" aling="left" for="name">Name</label>
+                            <input type="text" class="form-control form-control-sm" id="name" th:field="*{name}">
                             <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Full name error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="surname">Lastname</label>
-                            <input type="text" class="form-control-sm input-sm" id="surname" th:field="*{surname}">
+                            <label class="control-label small" aling="left" for="surname">Lastname</label>
+                            <input type="text" class="form-control form-control-sm" id="surname" th:field="*{surname}">
                             <span class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">last name error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="mobile">Mobile</label>
-                            <input type="tel" class="form-control-sm input-sm" id="mobile" th:field="*{mobile}">
+                            <label class="control-label small" aling="left" for="mobile">Mobile</label>
+                            <input type="tel" class="form-control form-control-sm" id="mobile" th:field="*{mobile}">
                             <span class="error" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}">mobile error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="DOB">Date of birth</label>
-                            <input type="date" class="form-control-sm input-sm" id="DOB" th:field="*{DOB}">
+                            <label class="control-label small" aling="left" for="DOB">Date of birth</label>
+                            <input type="date" class="form-control form-control-sm" id="DOB" th:field="*{DOB}">
                             <span  class="error" th:if="${#fields.hasErrors('DOB')}" th:errors="*{DOB}">Date error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="email">Email</label>
-                            <input type="email" class="form-control-sm input-sm" id="email" th:field="*{email}">
+                            <label class="control-label small" aling="left" for="email">Email</label>
+                            <input type="email" class="form-control form-control-sm" id="email" th:field="*{email}">
                             <span class="error"  th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="homeAddress">Delivery address</label>
-                            <input type="text" class="form-control-sm input-sm" id="homeAddress" th:field="*{homeAddress}">
+                            <label class="control-label small" aling="left" for="homeAddress">Delivery address</label>
+                            <input type="text" class="form-control form-control-sm" id="homeAddress" th:field="*{homeAddress}">
                             <span  class="error" th:if="${#fields.hasErrors('homeAddress')}" th:errors="*{homeAddress}">homeAddress error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="username">Login</label>
-                            <input type="text" class="form-control-sm input-sm" id="username" th:field="*{username}">
+                            <label class="control-label small" aling="left" for="username">Login</label>
+                            <input type="text" class="form-control form-control-sm" id="username" th:field="*{username}">
                             <span  class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</span>
                             <span  class="error" th:if="${errorUsername!=null}" th:text=="${errorUsername}">username error</span>
                         </div>
                         <div class="form-group">
-                            <label aling="left" for="password">Password</label>
-                            <input type="password" class="form-control-sm input-sm" id="password" th:field="*{password}">
+                            <label class="control-label small" aling="left" for="password">Password</label>
+                            <input type="password" class="form-control form-control-sm" id="password" th:field="*{password}">
                             <span  class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</span>
                         </div>
 

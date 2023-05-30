@@ -7,7 +7,7 @@ html {
   min-height: 100%;
 }
 body {
-  margin-bottom: 60px;
+  margin-bottom: 60px;}
 
 .footer{
     position: absolute;
@@ -22,15 +22,22 @@ body {
     padding-top: 8px;
 }
 
-.container > ul li
+.form-group{
+    margin-bottom: 5px;
+}
+label.control-label{
+    margin-bottom: 0px;
+}
+
+.menu > ul li
  {
   list-style-type: none;
 }
 
-html,html *{box-sizing: border-box !important;}
 
-span {
+span.error {
     color: red;
     font-style: italic;
     font-size: 75%;
+
 }

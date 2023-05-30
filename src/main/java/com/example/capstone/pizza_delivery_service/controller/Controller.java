@@ -115,7 +115,7 @@ public class Controller {
 
     @PostMapping(value = "/signup")
     public String signUpNewUser(@Valid @ModelAttribute(value = "customer") Customer customer, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()||(databaseService.checkNewCustomerUsername(customer.getUsername()))) {
             logger.error("*************FORM ERRORRR********************");
             model.addAttribute("customer", customer);
             model.addAttribute("name", customer.getName());
@@ -135,6 +135,12 @@ public class Controller {
             model.addAttribute("orderDetails", orderDetails);
             return "signup";
         }
+        logger.error("*************FORM Correct********************");
+        model.addAttribute("orders", databaseService.getAllOrders());
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
+
         customerService.registerNewCustomer(customer);
         return "redirect:/";
     }

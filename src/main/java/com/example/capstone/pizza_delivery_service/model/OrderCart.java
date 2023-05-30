@@ -17,7 +17,6 @@ import java.util.List;
 
 public class OrderCart {
     private boolean isEmpty=true;
-
     private BigDecimal sum;
     private List<Dishes> dishesList=new ArrayList<>();
     public List<Dishes> getDishesList() {
