@@ -133,8 +133,8 @@
                     </div>
                 </div>
 
-                <div class="nav-item" style="color:white;">
-                    <div sec:authorize="!isAuthenticated()"><strong>Welcome dear guest!</strong></div>
+                <div class="nav-item text-nowrap" style="color:white;">
+                    <div sec:authorize="!isAuthenticated()" ><strong>Welcome dear guest!</strong></div>
                     <div sec:authorize="isAuthenticated()">
                         <strong> Welcome: <b sec:authentication="name"></b> </strong>
                     </div>
