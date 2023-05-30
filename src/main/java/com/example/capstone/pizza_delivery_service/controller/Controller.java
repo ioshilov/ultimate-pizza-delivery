@@ -131,12 +131,17 @@ public class Controller {
     @GetMapping(value = "/login")
     public String getLogin(Model model) {
         model.addAttribute("customer", customer);
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
         return "login";
     }
 
     @GetMapping(value = "/signup")
     public String getSignup(Model model) {
         model.addAttribute("customer", customer);
+        model.addAttribute("orderCart", orderCart);
+
         return "signup";
     }
 

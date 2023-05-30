@@ -29,6 +29,112 @@
 
                 </ul>
 
+
+
+                <div class="container ">
+                    <div class="row">
+                        <div align="center" class="col py-6">
+
+                            <!-- MODAL BUTTON -->
+                            <button type="button" class="btn btn-primary" th:disabled="${orderCart.isEmpty eq true}" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModalCenter"
+                                    data-id="Open cart" th:text="${orderCart.sum != null} ? 'Your order: '+  ${orderCart.sum} +' tg.': 'Shopping cart is empty'" >
+<!--                                    th:text="'Ваш заказ на сумму '+  ${orderCart.sum}"-->
+
+
+                                Open cart
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Sign up</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table-sm  table-striped w-auto small " align="center">
+                                                <thead class="ttop">
+                                                <tr class="table-info">
+                                                    <td width="20px"><b> №</b></td>
+                                                    <td><b>Description</b></td>
+                                                    <td width="60px"><b>Price</b></td>
+                                                    <td width="60px"><b></b></td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="dish,iter : ${dishes}" class="display-8">
+                                                    <td th:text=${iter.index}+1>Num</td>
+                                                    <td th:text="${dish.description}">Food</td>
+                                                    <td th:text="${dish.sum}">Price</td>
+                                                    <td>
+                                                        <form action="#" th:action="@{/delete/}+${iter.index}" method="get">
+                                                            <input class="btn btn-danger btn-sm" type="submit" value="del">
+                                                        </form>
+                                                    </td>
+                                                    </td>   </tr>
+                                                </tbody>
+
+                                            </table>
+                                            <small id="passwordHelpBlock" class="form-text text-muted">
+                                                Delivery cost = 1500 tg.
+                                            </small>
+
+                                            <form id="clientForm" action="#" th:action="@{/pay}" th:object="${orderDetails}"
+                                                  method="post">
+
+                                                <div class="form-group">
+                                                    <label aling="left" for="name">Name</label>
+                                                    <input type="text" class="form-control input-sm" id="name" th:field="*{name}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label aling="left" for="mobile">Mobile</label>
+                                                    <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label aling="left" for="address">Delivery address</label>
+                                                    <input type="text" class="form-control input-sm" id="address" th:field="*{address}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label aling="left" for="address">Comments</label>
+                                                    <input type="text" class="form-control input-sm" id="comments" th:field="*{comments}">
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+
+                                        <div class="modal-footer">
+                                            <div class="container" align="left">
+                                                <td><b>Total: </b></td>
+                                                <td><b th:text="${#aggregates.sum(dishes.![sum])}+1500"/></td>
+                                                <td><b>tg. </b></td>
+                                                <br>
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+
+                                            <input class="btn btn-primary" form="clientForm" type="submit"
+                                                   value="Pay by cash" name="action">
+
+                                            <input class="btn btn-primary" form="clientForm" type="submit"
+                                                   value="Pay online by card" name="action">
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="nav-item" style="color:white;">
                     <div sec:authorize="!isAuthenticated()"><strong>Welcome dear guest!</strong></div>
                     <div sec:authorize="isAuthenticated()">
