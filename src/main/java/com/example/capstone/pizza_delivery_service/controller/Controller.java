@@ -137,8 +137,8 @@ public class Controller {
     public String getLogin(Model model) {
         model.addAttribute("customer", customer);
         model.addAttribute("orderCart", orderCart);
-        model.addAttribute("dishes", orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("dishes", orderCart.getDishesList());
         return "login";
     }
 
@@ -147,7 +147,7 @@ public class Controller {
         model.addAttribute("customer", customer);
         model.addAttribute("orderCart", orderCart);
         model.addAttribute("orderDetails", orderDetails);
-
+        model.addAttribute("dishes", orderCart.getDishesList());
         return "signup";
     }
 
