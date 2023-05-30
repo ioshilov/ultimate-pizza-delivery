@@ -10,12 +10,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.SessionScope;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Controller
+@SessionScope
 @RequestMapping("/")
 public class Controller {
     Logger logger = LoggerFactory.getLogger(Controller.class);
@@ -127,6 +129,10 @@ public class Controller {
             if (databaseService.checkNewCustomerUsername(customer.getUsername())){
                 model.addAttribute("errorUsername","Username exist");
             }
+            model.addAttribute("orders", databaseService.getAllOrders());
+            model.addAttribute("orderCart", orderCart);
+            model.addAttribute("dishes", orderCart.getDishesList());
+            model.addAttribute("orderDetails", orderDetails);
             return "signup";
         }
         customerService.registerNewCustomer(customer);
