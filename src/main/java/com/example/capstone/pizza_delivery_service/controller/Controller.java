@@ -50,6 +50,9 @@ public class Controller {
     public String getAll(Model model) {
         List<Customer> customers = databaseService.getAllCustomers();
         model.addAttribute("customers", customers);
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
         return "customers-view";
     }
 
@@ -58,12 +61,18 @@ public class Controller {
         List<Customer> customerList=new ArrayList<>();
         customerList.add(databaseService.findCustomerById(id));
         model.addAttribute("customers", customerList);
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
         return "credentials-view";
     }
 
     @GetMapping(value = "/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", databaseService.getAllOrders());
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
         return "orders-view";
     }
 
@@ -100,11 +109,7 @@ public class Controller {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/showordercart")
-    public String showCart(Model model) {
-        model.addAttribute("dishes", orderCart.getDishesList());
-        return "ordercart";
-    }
+
 
     @PostMapping(value = "/signup")
     public String signUpNewUser(@Valid @ModelAttribute(value = "customer") Customer customer, BindingResult bindingResult, Model model) {
@@ -141,6 +146,7 @@ public class Controller {
     public String getSignup(Model model) {
         model.addAttribute("customer", customer);
         model.addAttribute("orderCart", orderCart);
+        model.addAttribute("orderDetails", orderDetails);
 
         return "signup";
     }
