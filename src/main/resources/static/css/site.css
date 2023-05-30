@@ -29,6 +29,10 @@ label.control-label{
     margin-bottom: 0px;
 }
 
+cardLogin {
+    border: 0px;
+}
+
 .menu > ul li
  {
   list-style-type: none;
