@@ -25,31 +25,53 @@ import java.util.List;
 public class DatabaseService {
     Logger logger = LoggerFactory.getLogger(Controller.class);
 
-    @Autowired
-    private  CustomersRepository customersRepository;
-    @Autowired
-    private CustomersCredentialsRepository customersCredentialsRepository;
-    @Autowired
-    private OrdersRepository ordersRepository;
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
-    @Autowired
-    private OrderCartRepository orderCartRepository;
-    @Autowired
-    private DishesRepository dishesRepository;
-    @Autowired
-    private ToppingsRepository toppingsRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private FoodTypesRepository foodTypesRepository;
 
-    @Autowired
-    private FoodTypesMapper foodTypesMapper;
+    private final CustomersRepository customersRepository;
 
-    @Autowired
-    private CustomerMapper customerMapper;
+    private final CustomersCredentialsRepository customersCredentialsRepository;
 
+    private final OrdersRepository ordersRepository;
+
+    private final OrderDetailsRepository orderDetailsRepository;
+
+    private final OrderCartRepository orderCartRepository;
+
+    private final DishesRepository dishesRepository;
+
+    private final ToppingsRepository toppingsRepository;
+
+    private final PaymentRepository paymentRepository;
+
+    private final FoodTypesRepository foodTypesRepository;
+
+    private final FoodTypesMapper foodTypesMapper;
+
+
+    private final CustomerMapper customerMapper;
+
+    public DatabaseService(CustomersRepository customersRepository
+            , CustomersCredentialsRepository customersCredentialsRepository
+            , OrdersRepository ordersRepository
+            , OrderDetailsRepository orderDetailsRepository, OrderCartRepository orderCartRepository
+            , DishesRepository dishesRepository
+            , ToppingsRepository toppingsRepository
+            , PaymentRepository paymentRepository
+            , FoodTypesRepository foodTypesRepository
+            , FoodTypesMapper foodTypesMapper
+            , CustomerMapper customerMapper) {
+        this.customersRepository = customersRepository;
+        this.customersCredentialsRepository = customersCredentialsRepository;
+        this.ordersRepository = ordersRepository;
+        this.orderDetailsRepository = orderDetailsRepository;
+        this.orderCartRepository = orderCartRepository;
+        this.dishesRepository = dishesRepository;
+        this.toppingsRepository = toppingsRepository;
+        this.paymentRepository = paymentRepository;
+        this.foodTypesRepository = foodTypesRepository;
+        this.foodTypesMapper = foodTypesMapper;
+        this.customerMapper = customerMapper;
+        loadImages();
+    }
 
     public List<Customer> getAllCustomers() {
 
