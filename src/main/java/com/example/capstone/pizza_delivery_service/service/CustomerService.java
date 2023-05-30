@@ -23,29 +23,48 @@ import java.util.List;
 public class CustomerService {
 
     Logger logger = LoggerFactory.getLogger(Controller.class);
-    @Autowired
-    private CustomersCredentialsRepository customersCredentialsRepository;
-    @Autowired
-    private CustomersRepository customersRepository;
-    @Autowired
-    private OrdersRepository ordersRepository;
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
-    @Autowired
-    private OrderCartRepository orderCartRepository;
-    @Autowired
-    private DishesRepository dishesRepository;
-    @Autowired
-    private ToppingsRepository toppingsRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private FoodTypesRepository foodTypesRepository;
-    @Autowired
-    private DatabaseService databaseService;
 
+    private final CustomersCredentialsRepository customersCredentialsRepository;
 
-    public CustomerService() {
+    private final CustomersRepository customersRepository;
+
+    private final OrdersRepository ordersRepository;
+
+    private final OrderDetailsRepository orderDetailsRepository;
+
+    private final OrderCartRepository orderCartRepository;
+
+    private final DishesRepository dishesRepository;
+
+    private final ToppingsRepository toppingsRepository;
+
+    private final PaymentRepository paymentRepository;
+
+    private final FoodTypesRepository foodTypesRepository;
+
+    private final DatabaseService databaseService;
+
+    @Autowired
+    public CustomerService(CustomersCredentialsRepository customersCredentialsRepository,
+                           CustomersRepository customersRepository,
+                           OrdersRepository ordersRepository,
+                           OrderDetailsRepository orderDetailsRepository,
+                           OrderCartRepository orderCartRepository,
+                           DishesRepository dishesRepository,
+                           ToppingsRepository toppingsRepository,
+                           PaymentRepository paymentRepository,
+                           FoodTypesRepository foodTypesRepository,
+                           DatabaseService databaseService) {
+        this.customersCredentialsRepository = customersCredentialsRepository;
+        this.customersRepository = customersRepository;
+        this.ordersRepository = ordersRepository;
+        this.orderDetailsRepository = orderDetailsRepository;
+        this.orderCartRepository = orderCartRepository;
+        this.dishesRepository = dishesRepository;
+        this.toppingsRepository = toppingsRepository;
+        this.paymentRepository = paymentRepository;
+        this.foodTypesRepository = foodTypesRepository;
+        this.databaseService = databaseService;
     }
 
     public void createOrder(OrderCart orderCart, OrderDetails orderDetails, UserPrincipal user, String payment) {

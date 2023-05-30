@@ -29,22 +29,19 @@
 
                 </ul>
 
-
-
                 <div class="container ">
                     <div class="row">
                         <div align="center" class="col py-6">
 
                             <!-- MODAL BUTTON -->
-                            <button type="button" class="btn btn-primary" th:disabled="${orderCart.isEmpty eq true}" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary" th:disabled="${orderCart.isEmpty eq true}"
+                                    data-bs-toggle="modal"
                                     data-bs-target="#exampleModalCenter"
-                                    data-id="Open cart" th:text="${orderCart.sum != null} ? 'Your order: '+  ${orderCart.sum} +' tg.': 'Shopping cart is empty'" >
-<!--                                    th:text="'Ваш заказ на сумму '+  ${orderCart.sum}"-->
-
+                                    data-id="Open cart"
+                                    th:text="${orderCart.sum != null} ? 'Your order: '+  ${orderCart.sum} +' tg.': 'Shopping cart is empty'">
 
                                 Open cart
                             </button>
-
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -53,7 +50,8 @@
 
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLongTitle">Sign up</h5>
-                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -73,8 +71,10 @@
                                                     <td th:text="${dish.description}">Food</td>
                                                     <td th:text="${dish.sum}">Price</td>
                                                     <td>
-                                                        <form action="#" th:action="@{/delete/}+${iter.index}" method="get">
-                                                            <input class="btn btn-danger btn-sm" type="submit" value="del">
+                                                        <form action="#" th:action="@{/delete/}+${iter.index}"
+                                                              method="get">
+                                                            <input class="btn btn-danger btn-sm" type="submit"
+                                                                   value="del">
                                                         </form>
                                                     </td>
                                                     </td>   </tr>
@@ -85,30 +85,32 @@
                                                 Delivery cost = 1500 tg.
                                             </small>
 
-                                            <form id="clientForm" action="#" th:action="@{/pay}" th:object="${orderDetails}"
+                                            <form id="clientForm" action="#" th:action="@{/pay}"
+                                                  th:object="${orderDetails}"
                                                   method="post">
 
                                                 <div class="form-group">
                                                     <label aling="left" for="name">Name</label>
-                                                    <input type="text" class="form-control input-sm" id="name" th:field="*{name}">
+                                                    <input type="text" class="form-control input-sm" id="name"
+                                                           th:field="*{name}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label aling="left" for="mobile">Mobile</label>
-                                                    <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">
+                                                    <input type="tel" class="form-control input-sm" id="mobile"
+                                                           th:field="*{mobile}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label aling="left" for="address">Delivery address</label>
-                                                    <input type="text" class="form-control input-sm" id="address" th:field="*{address}">
+                                                    <input type="text" class="form-control input-sm" id="address"
+                                                           th:field="*{address}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label aling="left" for="address">Comments</label>
-                                                    <input type="text" class="form-control input-sm" id="comments" th:field="*{comments}">
+                                                    <input type="text" class="form-control input-sm" id="comments"
+                                                           th:field="*{comments}">
                                                 </div>
-
                                             </form>
                                         </div>
-
-
                                         <div class="modal-footer">
                                             <div class="container" align="left">
                                                 <td><b>Total: </b></td>
@@ -116,18 +118,14 @@
                                                 <td><b>tg. </b></td>
                                                 <br>
                                             </div>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
                                             <input class="btn btn-primary" form="clientForm" type="submit"
                                                    value="Pay by cash" name="action">
 
                                             <input class="btn btn-primary" form="clientForm" type="submit"
                                                    value="Pay online by card" name="action">
-
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -143,86 +141,22 @@
                 </div>
             </div>
         </div>
-
-
         <div class="d-flex flex-row-reverse">
             <div sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" class="btn btn-primary">Logout</button>
-
                 </form>
             </div>
             <div sec:authorize="isAnonymous()">
                 <a class="btn btn-primary" href="#" th:href="@{/login}">Login</a>
             </div>
-
-
             <div sec:authorize="isAnonymous()">
-                <a class="btn btn-primary text-nowrap" href="#"  th:href="@{/signup}"  >Sign up</a>
+                <a class="btn btn-primary text-nowrap" href="#" th:href="@{/signup}">Sign up</a>
             </div>
-
-                <!-- Modal -->
-<!--                <div class="modal fade" id="signupmodal" tabindex="-1" role="dialog"-->
-<!--                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
-<!--                    <div class="modal-dialog modal-dialog-centered" role="document">-->
-<!--                        <div class="modal-content">-->
-<!--                            <div class="modal-header">-->
-<!--                                <h5 class="modal-title" id="exampleModalLongTitle">Your order</h5>-->
-<!--                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                                    <span aria-hidden="true">&times;</span>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                            <div class="modal-body">-->
-<!--                                 <form id="signupForm" action="#" th:action="@{/signup}" th:object="${customer}"-->
-<!--                                      method="post">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label aling="left" for="name">Name</label>-->
-<!--                                        <input type="text" class="form-control input-sm" id="name" th:field="*{name}">-->
-<!--                                    </div>-->
-<!--                                     <div class="form-group">-->
-<!--                                         <label aling="left" for="surname">Lastname</label>-->
-<!--                                         <input type="text" class="form-control input-sm" id="surname" th:field="*{surname}">-->
-<!--                                     </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label aling="left" for="mobile">Mobile</label>-->
-<!--                                        <input type="tel" class="form-control input-sm" id="mobile" th:field="*{mobile}">-->
-<!--                                    </div>-->
-<!--                                     <div class="form-group">-->
-<!--                                         <label aling="left" for="DOB">Date of birth</label>-->
-<!--                                         <input type="date" class="form-control input-sm" id="DOB" th:field="*{DOB}">-->
-<!--                                     </div>-->
-<!--                                     <div class="form-group">-->
-<!--                                         <label aling="left" for="email">Email</label>-->
-<!--                                         <input type="email" class="form-control input-sm" id="email" th:field="*{email}">-->
-<!--                                     </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label aling="left" for="homeAddress">Delivery address</label>-->
-<!--                                        <input type="text" class="form-control input-sm" id="homeAddress" th:field="*{homeAddress}">-->
-<!--                                    </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label aling="left" for="username">Login</label>-->
-<!--                                        <input type="text" class="form-control input-sm" id="username" th:field="*{username}">-->
-<!--                                    </div>-->
-<!--                                     <div class="form-group">-->
-<!--                                         <label aling="left" for="password">Password</label>-->
-<!--                                         <input type="password" class="form-control input-sm" id="password" th:field="*{password}">-->
-<!--                                     </div>-->
-
-<!--                                </form>-->
-<!--                            </div>-->
-<!--                            <div class="modal-footer">-->
-<!--                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--                                <input class="btn btn-primary" form="signupForm" type="submit"-->
-<!--                                       value="Sign up">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </div>
+        </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"></script>
-
 
 
     </body>

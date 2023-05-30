@@ -22,17 +22,25 @@ import java.util.List;
 public class Controller {
     Logger logger = LoggerFactory.getLogger(Controller.class);
 
-    @Autowired
-    private  CustomerService customerService;
-    @Autowired
-    private  DatabaseService databaseService;
-    @Autowired
-    private Customer customer;
-    @Autowired
-    private OrderCart orderCart;
-    @Autowired
-    private OrderDetails orderDetails;
 
+    private final CustomerService customerService;
+
+    private final DatabaseService databaseService;
+
+    private final Customer customer;
+
+    private  OrderCart orderCart;
+
+    private final OrderDetails orderDetails;
+
+    @Autowired
+    public Controller(CustomerService customerService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
+        this.customerService = customerService;
+        this.databaseService = databaseService;
+        this.customer = customer;
+        this.orderCart = orderCart;
+        this.orderDetails = orderDetails;
+    }
 
     @GetMapping(value = {"/", "/index"})
     public String getHomePage(Model model) {
