@@ -45,7 +45,7 @@ public class Customer{
 
     @NotEmpty(message = "Password is required")
     @Size(min=5, max=20, message = "Password must be more than 5 and less 20 symbols")
-    @Pattern(regexp = "^(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()-__+.]){1,}).{8,}$",message = "Password should be 8 symbols and more, have 1 spec and 1 capital letter")
+    @Pattern(regexp = "^(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()-__+.]){1,}).{8,}$",message = "Password should be 8 symbols and more, have 1 spec and 1 capital letter")
     private String password;
 
     private List<String> roles;
