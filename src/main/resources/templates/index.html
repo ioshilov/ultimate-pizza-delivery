@@ -9,46 +9,45 @@
 <div layout:fragment="content">
 
 
-
-
-
     <div class="menu" align="center">
-        <div class="row  row-cols-sm-4">
-            <div th:each="foodtype : ${foodtypes}" align="center">
+        <div class="col-auto">
+            <div class="row  row-cols-sm-4">
+                <div th:each="foodtype : ${foodtypes}" align="center">
 
-                <div class="col">
-                    <div class="card" style="width: 18rem;" align="center">
+                    <div class="col">
+                        <div class="card" style="width: 18rem;" align="center">
 
-<!--                        BACKUP SIGN-->
+                            <!--                        BACKUP SIGN-->
 
-                        <img class="card-img-top" th:src="@{/images/}+${foodtype.id}+'.jpg'" alt="Card image cap">
-                        <div class="card-body">
-                            <form action="#" th:action="@{/addtocart/}+${foodtype.id}" method="post">
-                                <div class="row">
-                                    <h4 th:text="${foodtype.name}" align="center"/>
-                                    <p th:text="${foodtype.price}+' tg.'" align="center"/>
-                                    <div class="col-12 col-sm-6">
+                            <img class="card-img-top" th:src="@{/images/}+${foodtype.id}+'.jpg'" alt="Card image cap">
+                            <div class="card-body">
+                                <form action="#" th:action="@{/addtocart/}+${foodtype.id}" method="post">
+                                    <div class="row">
+                                        <h4 th:text="${foodtype.name}" align="center"/>
+                                        <p th:text="${foodtype.price}+' tg.'" align="center"/>
+                                        <div class="col-12 col-sm-6">
 
                                             <p th:text="${foodtype.description}" align="center"/>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <ul class="list-unstyled">
+                                                <li th:each="toppings : ${toppingslist}">
+                                                    <label th:for="${toppings.name}" th:text="${toppings.name}">topping
+                                                        name</label>
+                                                    <input type="checkbox"
+                                                           th:name="topping" th:checked="false"
+                                                           th:value="${toppings.name}"/>
+                                                    <br>
+                                                </li>
+                                            </ul>
+                                            <input class="btn btn-primary btn-sm" type="submit" value="Add to cart">
+
+
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-sm-6">
-                                        <ul class="list-unstyled">
-                                            <li th:each="toppings : ${toppingslist}" >
-                                                <label th:for="${toppings.name}" th:text="${toppings.name}">topping
-                                                    name</label>
-                                                <input type="checkbox"
-                                                       th:name="topping" th:checked="false"
-                                                       th:value="${toppings.name}"/>
-                                                <br>
-                                            </li>
-                                        </ul>
-                                            <input class="btn btn-primary btn-sm" type="submit"   value="Add to cart">
 
-
-                                    </div>
-                                </div>
-
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,7 +55,7 @@
         </div>
     </div>
 
-</div>
+    </div>
 
 </body>
 </html>

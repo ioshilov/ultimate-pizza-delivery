@@ -27,8 +27,19 @@ public class WebSecurityConfig  {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(t->t
-                .requestMatchers("/", "/index","/addtocart/{ID}","/login","/signup","/css/*", "/js/*","/images/*","/error","/pay","/signup","/error").permitAll()
+                .requestMatchers("/",
+                        "/index",
+                        "/addtocart/{ID}",
+                        "/login","/signup",
+                        "/css/*",
+                        "/js/*",
+                        "/images/*",
+                        "/error",
+                        "/pay",
+                        "/signup",
+                        "/error").permitAll()
                 .requestMatchers("/orders","/customers","/customers/*").hasAuthority("ADMIN")
+                .requestMatchers("/myOrders").hasAuthority("CUSTOMER")
                 .anyRequest().authenticated())
                 .formLogin(form->form.loginPage("/login")
                         .loginProcessingUrl("/login")

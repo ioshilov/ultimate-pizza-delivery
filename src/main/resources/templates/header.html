@@ -27,6 +27,11 @@
                            th:href="@{/orders}" sec:authorize="hasAuthority('ADMIN')">Orders</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${module == 'orders' ? 'active' : ''}" href="#"
+                           th:href="@{/myOrders}">My orders</a>
+                    </li>
+
                 </ul>
 
                 <div class="container ">

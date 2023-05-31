@@ -1,4 +1,5 @@
 package com.example.capstone.pizza_delivery_service.controller;
+import com.example.capstone.pizza_delivery_service.entity.OrdersEntity;
 import com.example.capstone.pizza_delivery_service.model.*;
 import com.example.capstone.pizza_delivery_service.service.CustomerService;
 import com.example.capstone.pizza_delivery_service.service.DatabaseService;
@@ -6,7 +7,9 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +68,21 @@ public class Controller {
         model.addAttribute("dishes", orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);
         return "customers-view";
+    }
+
+    @GetMapping(value = "/myOrders")
+    public String getMyOrders(Model model) {
+        List<Customer> customers = databaseService.getAllCustomers();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String user= auth.getName();
+        List<OrdersEntity> list= databaseService.findOrdersByUsername(user);
+
+        model.addAttribute("orders", list);
+        model.addAttribute("customers", customers);
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
+        return "myOrders-view";
     }
 
     @GetMapping(value = "/customers/{id}")

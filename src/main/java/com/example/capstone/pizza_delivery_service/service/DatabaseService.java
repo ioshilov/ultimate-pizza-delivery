@@ -7,6 +7,7 @@ import com.example.capstone.pizza_delivery_service.mapper.CustomerMapper;
 import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
 import com.example.capstone.pizza_delivery_service.model.Customer;
 import com.example.capstone.pizza_delivery_service.model.FoodTypes;
+import com.example.capstone.pizza_delivery_service.model.Order;
 import com.example.capstone.pizza_delivery_service.model.Toppings;
 import com.example.capstone.pizza_delivery_service.repositories.*;
 import org.slf4j.Logger;
@@ -98,6 +99,12 @@ public class DatabaseService {
        if (customersCredentialsRepository.findByUsername(username).isEmpty()){
             return false;}
            return true;
+    }
+
+    public List<OrdersEntity> findOrdersByUsername (String username){
+            return  ordersRepository.findAllBycustomerid(customersCredentialsRepository.findByUsername(username).get().getCustomerid());
+
+
     }
 
     public void loadImages(){
