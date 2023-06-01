@@ -9,12 +9,12 @@
 <div layout:fragment="content">
 
 
-    <div class="menu" align="center">
-        <div class="col-auto">
-            <div class="row  row-cols-sm-4">
+    <div class="container g-0" align="center">
+
+            <div class="row row-cols-sm-4">
                 <div th:each="foodtype : ${foodtypes}" align="center">
 
-                    <div class="col">
+
                         <div class="card" style="width: 18rem;" align="center">
 
                             <!--                        BACKUP SIGN-->
@@ -25,11 +25,11 @@
                                     <div class="row">
                                         <h4 th:text="${foodtype.name}" align="center"/>
                                         <p th:text="${foodtype.price}+' tg.'" align="center"/>
-                                        <div class="col-12 col-sm-6">
+                                        <div class="col-sm-7">
 
                                             <p th:text="${foodtype.description}" align="center"/>
                                         </div>
-                                        <div class="col-12 col-sm-6">
+                                        <div class="col-sm-5" align="left">
                                             <ul class="list-unstyled">
                                                 <li th:each="toppings : ${toppingslist}">
                                                     <label th:for="${toppings.name}" th:text="${toppings.name}">topping
@@ -40,19 +40,19 @@
                                                     <br>
                                                 </li>
                                             </ul>
-                                            <input class="btn btn-primary btn-sm" type="submit" value="Add to cart">
+
 
 
                                         </div>
                                     </div>
-
+                                    <input class="btn btn-primary btn-sm" type="submit" value="Add to cart">
                                 </form>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
-        </div>
+
     </div>
 
     </div>
