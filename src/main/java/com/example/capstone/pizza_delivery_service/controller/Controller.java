@@ -145,25 +145,15 @@ public class Controller {
         if (bindingResult.hasErrors()||(databaseService.checkNewCustomerUsername(customer.getUsername()))) {
             logger.error("*************FORM ERRORRR********************");
             model.addAttribute("customer", customer);
-            model.addAttribute("name", customer.getName());
-            model.addAttribute("surname", customer.getSurname());
-            model.addAttribute("mobile", customer.getMobile());
-            model.addAttribute("homeAddress", customer.getHomeAddress());
-            model.addAttribute("email", customer.getEmail());
-            model.addAttribute("username", customer.getSurname());
-            model.addAttribute("password", customer.getPassword());
-            model.addAttribute("DOB", customer.getDOB());
             if (databaseService.checkNewCustomerUsername(customer.getUsername())){
                 model.addAttribute("errorUsername","Username exist");
             }
-            model.addAttribute("orders", databaseService.getAllOrders());
             model.addAttribute("orderCart", orderCart);
             model.addAttribute("dishes", orderCart.getDishesList());
             model.addAttribute("orderDetails", orderDetails);
             return "signup";
         }
         logger.error("*************FORM Correct********************");
-        model.addAttribute("orders", databaseService.getAllOrders());
         model.addAttribute("orderCart", orderCart);
         model.addAttribute("dishes", orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);

@@ -79,26 +79,27 @@ public class DatabaseService {
         return customersRepository.findAll().stream().map(x -> customerMapper.mapCustomerEntityToModel(x)).toList();
     }
 
-    public List<Toppings> getAllToppings(){
-        return toppingsRepository.findAll().stream().map(x->new Toppings(x.getName(),x.getPrice())).toList();
+    public List<Toppings> getAllToppings() {
+        return toppingsRepository.findAll().stream().map(x -> new Toppings(x.getName(), x.getPrice())).toList();
     }
 
-    public List<FoodTypes> getAllFoodTypes(){
-        return foodTypesRepository.findAll().stream().map(x->foodTypesMapper.mapFoodTypesEntityToModel(x)).toList();
+    public List<FoodTypes> getAllFoodTypes() {
+        return foodTypesRepository.findAll().stream().map(x -> foodTypesMapper.mapFoodTypesEntityToModel(x)).toList();
     }
 
-    public Customer findCustomerById(Integer id){
+    public Customer findCustomerById(Integer id) {
         return customerMapper.mapCustomerEntityToModel(customersRepository.findById(id).get());
     }
 
-    public List<OrdersEntity> getAllOrders (){
+    public List<OrdersEntity> getAllOrders() {
         return ordersRepository.findAll();
     }
 
-    public Boolean checkNewCustomerUsername (String username){
-       if (customersCredentialsRepository.findByUsername(username).isEmpty()){
-            return false;}
-           return true;
+    public Boolean checkNewCustomerUsername(String username) {
+        if (customersCredentialsRepository.findByUsername(username).isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     public List<OrdersEntity> findOrdersByUsername (String username){
@@ -107,33 +108,24 @@ public class DatabaseService {
 
     }
 
-    public void loadImages(){
-       List<FoodTypesEntity> foodTypesList=foodTypesRepository.findAll();
+    public void loadImages() {
+        List<FoodTypesEntity> foodTypesList = foodTypesRepository.findAll();
         int id;
-        try
-        {
-            logger.error("****************** testing filewriting ************");
-            for (var foodtype:foodTypesList
-             ) {
-                byte[] b=foodtype.getImage();
-                    id=foodtype.getId();
-
-                    String fileName="src/main/resources/static/images/"+id+".jpg";
-
-                     FileOutputStream fos = new FileOutputStream(new File(fileName));
-                    fos.write(b);
-                    fos.close();
+        try {
+            logger.warn("****************** testing fileWriting ************");
+            for (var foodtype : foodTypesList
+            ) {
+                byte[] b = foodtype.getImage();
+                id = foodtype.getId();
+                String fileName = "src/main/resources/static/images/" + id + ".jpg";
+                FileOutputStream fos = new FileOutputStream(new File(fileName));
+                fos.write(b);
+                fos.close();
             }
+        } catch (Exception err) {
+            err.printStackTrace();
         }
-            catch(Exception err)
-            {
-                err.printStackTrace();
-            }
-
-
-        }
-
-
+    }
 
 
 }
