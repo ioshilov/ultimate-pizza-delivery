@@ -40,6 +40,16 @@ public class FoodTypesEntity {
     @OneToMany (mappedBy = "foodTypesEntity",fetch = FetchType.EAGER)
     private List<DishesEntity> dishesEntity;
 
+    public FoodTypesEntity() {
+    }
+
+    public FoodTypesEntity(Integer id, String name, BigDecimal price, String description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

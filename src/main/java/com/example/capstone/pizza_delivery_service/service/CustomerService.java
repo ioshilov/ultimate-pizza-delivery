@@ -1,5 +1,6 @@
 package com.example.capstone.pizza_delivery_service.service;
 
+import com.example.capstone.pizza_delivery_service.security.UserPrincipal;
 import com.example.capstone.pizza_delivery_service.controller.Controller;
 import com.example.capstone.pizza_delivery_service.entity.*;
 import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
@@ -10,9 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -140,7 +139,7 @@ public class CustomerService {
         return dishes;
     }
 
-    public void registerNewCustomer(Customer customer) {
+    public CustomerEntity registerNewCustomer(Customer customer) {
 
         CustomersCredentialsEntity credentials = new CustomersCredentialsEntity();
         CustomerEntity customerEntity = new CustomerEntity();
@@ -150,7 +149,7 @@ public class CustomerService {
         List<AuthGroupEntity> authGroupEntityList = new ArrayList<>();
         authGroupEntityList.add(authGroupEntity);
 
-        authGroupEntity.setCustomersCredentialsEntity(credentials);
+//        authGroupEntity.setCustomersCredentialsEntity(credentials);
 
         credentials.setUsername(customer.getUsername());
         credentials.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
@@ -166,9 +165,10 @@ public class CustomerService {
         customerEntity.setEmail(customer.getEmail());
         customerEntity.setCustomersCredentialsEntity(credentials);
 
-        logger.warn("********************Service. Customer to DB  " + customerEntity + "***************");
 
-        customersRepository.save(customerEntity);
+
+        logger.warn("********************Service. Customer to DB  " + customerEntity + "***************");
+        return customersRepository.save(customerEntity);
 
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AuthGroupRepository extends JpaRepository<AuthGroupEntity,Integer> {
 
-     List<AuthGroupEntity> findAllBycustomerscredentialsid(Integer id);
+     List<AuthGroupEntity> findAllByid(Integer id);
 
 
 

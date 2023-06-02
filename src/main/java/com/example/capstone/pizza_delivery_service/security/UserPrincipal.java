@@ -1,4 +1,4 @@
-package com.example.capstone.pizza_delivery_service.model;
+package com.example.capstone.pizza_delivery_service.security;
 
 import com.example.capstone.pizza_delivery_service.controller.Controller;
 import com.example.capstone.pizza_delivery_service.entity.AuthGroupEntity;

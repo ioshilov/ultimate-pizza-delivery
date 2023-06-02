@@ -40,10 +40,17 @@ public class CustomersCredentialsEntity {
     @MapsId
     private CustomerEntity customerEntity;
 
-    @OneToMany (mappedBy = "customersCredentialsEntity",fetch = FetchType.LAZY,cascade =  CascadeType.ALL)
+    @OneToMany (fetch = FetchType.EAGER,cascade =  CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "customerscredentialsid")
     private List<AuthGroupEntity> authGroupEntityList;
 
     public CustomersCredentialsEntity() {
     }
 
+    public CustomersCredentialsEntity(Integer id, Integer customerid, String username, String password) {
+        this.id = id;
+        this.customerid = customerid;
+        this.username = username;
+        this.password = password;
+    }
 }

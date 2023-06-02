@@ -1,8 +1,7 @@
-package com.example.capstone.pizza_delivery_service;
+package com.example.capstone.pizza_delivery_service.security;
 
 import com.example.capstone.pizza_delivery_service.entity.AuthGroupEntity;
 import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEntity;
-import com.example.capstone.pizza_delivery_service.model.UserPrincipal;
 import com.example.capstone.pizza_delivery_service.repositories.AuthGroupRepository;
 import com.example.capstone.pizza_delivery_service.repositories.CustomersCredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UsernameNotFoundException("cannot find username: " + username);
 
         }
-        List<AuthGroupEntity> authGroups = authGroupRepository.findAllBycustomerscredentialsid(user.getId());
+
+        List<AuthGroupEntity> authGroups = user.getAuthGroupEntityList();
         return new UserPrincipal(user, authGroups);
     }
 }

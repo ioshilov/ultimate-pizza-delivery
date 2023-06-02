@@ -18,12 +18,20 @@ public class AuthGroupEntity {
     @Column (name="authgroup",nullable = false)
     private String authgroup;
 
-    @Column (name="customerscredentialsid",nullable = false,insertable=false, updatable=false)
-    private Integer customerscredentialsid;
+//    @Column (name="customerscredentialsid",nullable = false,insertable=false, updatable=false)
+//    private Integer customerscredentialsid;
+//
+//
+//    @ManyToOne (optional=false, cascade=CascadeType.ALL)
+//    @JoinColumn(name = "customerscredentialsid")
+//    private CustomersCredentialsEntity customersCredentialsEntity;
 
 
-    @ManyToOne (optional=false, cascade=CascadeType.ALL)
-    @JoinColumn(name = "customerscredentialsid")
-    private CustomersCredentialsEntity customersCredentialsEntity;
+    public AuthGroupEntity() {
+    }
 
+    public AuthGroupEntity(Integer id, String authgroup) {
+        this.id = id;
+        this.authgroup = authgroup;
+    }
 }

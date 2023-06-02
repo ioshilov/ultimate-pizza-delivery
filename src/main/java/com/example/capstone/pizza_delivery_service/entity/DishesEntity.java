@@ -59,6 +59,15 @@ public class DishesEntity {
 
         return foodTypesEntity.getName() +" + toppings:"+ toppingsEntitySet.stream().map(Object::toString).collect(Collectors.joining(","));
     }
+
+    public DishesEntity() {
+    }
+
+    public DishesEntity(Integer dishesID, FoodTypesEntity foodTypesEntity, List<ToppingsEntity> toppingsEntitySet) {
+        this.dishesID = dishesID;
+        this.foodTypesEntity = foodTypesEntity;
+        this.toppingsEntitySet = toppingsEntitySet;
+    }
 }
 
 

@@ -1,9 +1,5 @@
-package com.example.capstone.pizza_delivery_service;
+package com.example.capstone.pizza_delivery_service.security;
 
-import com.example.capstone.pizza_delivery_service.UserDetailsService;
-import com.example.capstone.pizza_delivery_service.repositories.AuthGroupRepository;
-import com.example.capstone.pizza_delivery_service.repositories.CustomersCredentialsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

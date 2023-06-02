@@ -35,6 +35,7 @@ public class ToppingsEntity {
     private List<DishesEntity> dishesEntitySet=new ArrayList<>();
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,5 +51,14 @@ public class ToppingsEntity {
     @Override
     public String toString() {
         return  name;
+    }
+
+    public ToppingsEntity() {
+    }
+
+    public ToppingsEntity(Integer id, String name, BigDecimal price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
     }
 }
