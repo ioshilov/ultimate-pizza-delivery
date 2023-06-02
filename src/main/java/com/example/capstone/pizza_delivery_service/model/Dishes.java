@@ -33,7 +33,7 @@ public class Dishes {
     public String toString (){
         if (toppings==null) {return foodType.getName();}
         if (toppings.isEmpty()) {return foodType.getName();}
-        return foodType.getName()+"     toppings: "+toppings.stream().map(Toppings::getName).collect(Collectors.joining(","));
+        return foodType.getName()+" | toppings: "+toppings.stream().map(Toppings::getName).collect(Collectors.joining(", "));
 }
 
     public void updateSum(){

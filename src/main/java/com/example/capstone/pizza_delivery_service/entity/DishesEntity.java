@@ -57,7 +57,7 @@ public class DishesEntity {
     public String toString() {
         if (toppingsEntitySet.isEmpty()){return foodTypesEntity.getName();}
 
-        return foodTypesEntity.getName() +" + toppings:"+ toppingsEntitySet.stream().map(Object::toString).collect(Collectors.joining(","));
+        return foodTypesEntity.getName() +" + toppings:"+ toppingsEntitySet.stream().map(Object::toString).collect(Collectors.joining(", "));
     }
 
     public DishesEntity() {

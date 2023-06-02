@@ -94,7 +94,7 @@ public class CustomerService {
         paymentEntity.setPaymentmethod(payment);
         paymentRepository.save(paymentEntity);
 
-        logger.warn("**********Service. Order details saved *****************");
+        logger.info("**********Service. Order details saved *****************");
     }
 
     public OrderCartEntity fillOrderCartWithDishesAndSave(OrderCart orderCart) {
@@ -113,7 +113,7 @@ public class CustomerService {
 
             dishesRepository.save(dishesEntity);
             orderCartEntity.addDishes(dishesEntity);
-            logger.warn("**********Service  STAGE  add dish " + dishesEntity + " to cart *****************");
+            logger.info("**********Service  STAGE  add dish " + dishesEntity + " to cart *****************");
 //            }
 
 
@@ -149,7 +149,6 @@ public class CustomerService {
         List<AuthGroupEntity> authGroupEntityList = new ArrayList<>();
         authGroupEntityList.add(authGroupEntity);
 
-//        authGroupEntity.setCustomersCredentialsEntity(credentials);
 
         credentials.setUsername(customer.getUsername());
         credentials.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
@@ -167,7 +166,7 @@ public class CustomerService {
 
 
 
-        logger.warn("********************Service. Customer to DB  " + customerEntity + "***************");
+        logger.info("********************Service. Customer to DB  " + customerEntity + "***************");
         return customersRepository.save(customerEntity);
 
     }

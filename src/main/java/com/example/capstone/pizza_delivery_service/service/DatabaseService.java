@@ -104,15 +104,13 @@ public class DatabaseService {
 
     public List<OrdersEntity> findOrdersByUsername (String username){
             return  ordersRepository.findAllBycustomerid(customersCredentialsRepository.findByUsername(username).get().getCustomerid());
-
-
     }
 
     public void loadImages() {
         List<FoodTypesEntity> foodTypesList = foodTypesRepository.findAll();
         int id;
         try {
-            logger.warn("****************** testing fileWriting ************");
+
             for (var foodtype : foodTypesList
             ) {
                 byte[] b = foodtype.getImage();
@@ -125,6 +123,7 @@ public class DatabaseService {
         } catch (Exception err) {
             err.printStackTrace();
         }
+        logger.info("****************** Pizza images updated ************");
     }
 
 

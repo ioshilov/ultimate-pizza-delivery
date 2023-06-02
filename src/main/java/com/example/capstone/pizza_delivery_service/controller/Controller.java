@@ -47,14 +47,13 @@ public class Controller {
     @GetMapping(value = {"/", "/index"})
     public String getHomePage(Model model) {
 
-        logger.info("********************INDEX*****************");
         model.addAttribute("foodtypes", databaseService.getAllFoodTypes());
         model.addAttribute("toppingslist", databaseService.getAllToppings());
         model.addAttribute("dishes", orderCart.getDishesList());
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("customer", customer);
         model.addAttribute("orderCart", orderCart);
-        logger.warn("********************Your cart is full of " + orderCart.getDishesList().toString());
+        logger.info("********************Your cart is full of " + orderCart.getDishesList().toString());
 
         return "index";
     }
@@ -106,7 +105,7 @@ public class Controller {
 
     @GetMapping(value = "/delete/{ID}")
     public String deleteFromCart(@PathVariable Integer ID) {
-        logger.warn("********************Delete ID " + ID+"******************");
+        logger.info("********************" + ID+" Deleted from cart******************");
         orderCart.deleteDishes(ID);
         logger.info(orderCart.toString());
         return "redirect:/";
@@ -116,14 +115,14 @@ public class Controller {
     public String addToCart(@ModelAttribute(value = "orderDetails") OrderDetails orderDetails,
                             @RequestParam(value = "action", required = true) String action,
                             @AuthenticationPrincipal UserPrincipal user) {
-        logger.info("*************Testing payment**************");
         logger.error(orderDetails.toString());
         if (orderCart.getDishesList().isEmpty()) {
             return "redirect:/";
         }
-        logger.info("*************" + action + "**************");
+
         customerService.createOrder(orderCart, orderDetails, user, action);
         orderCart = new OrderCart();
+        logger.info("************* Order - " + action + "**************");
         return "redirect:/";
     }
 
@@ -133,7 +132,7 @@ public class Controller {
                             @RequestParam(value = "topping", required = false) String[] toppings) {
         Dishes dishes=customerService.createDishes(ID,toppings);
         orderCart.addDishes(dishes);
-        logger.warn("added to cart " + dishes);
+        logger.info("added to cart " + dishes);
         return "redirect:/";
     }
 

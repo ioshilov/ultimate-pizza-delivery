@@ -1,6 +1,11 @@
 package com.example.capstone.pizza_delivery_service.controller;
 
-import com.example.capstone.pizza_delivery_service.model.*;
+
+
+import com.example.capstone.pizza_delivery_service.model.Customer;
+
+import com.example.capstone.pizza_delivery_service.model.OrderCart;
+import com.example.capstone.pizza_delivery_service.model.OrderDetails;
 import com.example.capstone.pizza_delivery_service.service.CustomerService;
 import com.example.capstone.pizza_delivery_service.service.DatabaseService;
 import jakarta.validation.Valid;
@@ -10,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
 
 @org.springframework.stereotype.Controller
-@SessionScope
 @RequestMapping("/")
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -42,42 +45,40 @@ public class AuthController {
     @PostMapping(value = "/signup")
     public String signUpNewUser(@Valid @ModelAttribute(value = "customer") Customer customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()||(databaseService.checkNewCustomerUsername(customer.getUsername()))) {
-            logger.error("*************FORM ERRORRR********************");
-            model.addAttribute("customer", customer);
+            logger.error("*************Sign up form ERRORR********************");
+
             if (databaseService.checkNewCustomerUsername(customer.getUsername())){
                 model.addAttribute("errorUsername","Username exist");
             }
-            model.addAttribute("orderCart", orderCart);
-            model.addAttribute("dishes", orderCart.getDishesList());
-            model.addAttribute("orderDetails", orderDetails);
+            model.addAttribute("customer", customer);
+            addDefaultAttributes(model);
             return "signup";
         }
-        logger.error("*************FORM Correct********************");
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("dishes", orderCart.getDishesList());
-        model.addAttribute("orderDetails", orderDetails);
-
+        addDefaultAttributes(model);
         customerService.registerNewCustomer(customer);
+        logger.info("************* New user signed up ********************");
         return "redirect:/";
     }
 
     @GetMapping(value = "/login")
     public String getLogin(Model model) {
-        model.addAttribute("customer", customer);
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("dishes", orderCart.getDishesList());
+        addDefaultAttributes(model);
         return "login";
     }
 
     @GetMapping(value = "/signup")
     public String getSignup(Model model) {
         model.addAttribute("customer", customer);
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("dishes", orderCart.getDishesList());
+        addDefaultAttributes(model);
         return "signup";
     }
 
+
+    public Model addDefaultAttributes(Model model){
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        return model;
+    }
 
 }

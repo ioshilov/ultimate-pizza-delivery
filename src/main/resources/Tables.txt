@@ -149,9 +149,6 @@ INSERT INTO foodtypes (name,price,description) VALUES
 ('Pizza Vegetarian',1230, 'Mozzarella cheese, our signature tomato sauce, mushroom, onion, peppers, cherry tomatoes.'),
 ('Pizza Europa pizza',2400, 'Sun-dried tomato, goat cheese, fresh basil and mozzarella.'),
 ('Pizza Hawaiian pizza',1500, 'Ham and pineapple.'),
-('Pizza margarita',1300, 'just default pizza'),
-('Pizza Pepperoni',1600,'just default pizza2'),
-('Pizza Diablo',2200,'just default pizza3'),
 ('Pizza Napoli',2500,'just default pizza4');
 
 

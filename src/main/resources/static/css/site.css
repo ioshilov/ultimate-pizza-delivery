@@ -25,6 +25,7 @@ body {
 .form-group{
     margin-bottom: 5px;
 }
+
 label.control-label{
     margin-bottom: 0px;
 }
@@ -54,4 +55,8 @@ span.error {
     padding-right: 0;
     padding-left: 0;
   }
+}
+
+.card-row {
+  margin-bottom: 0 !important;
 }
