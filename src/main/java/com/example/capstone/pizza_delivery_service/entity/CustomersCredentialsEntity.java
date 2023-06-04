@@ -34,7 +34,6 @@ public class CustomersCredentialsEntity {
     @NotNull
     private String password;
 
-
     @OneToOne()
     @JoinColumn(name = "customerid")
     @MapsId

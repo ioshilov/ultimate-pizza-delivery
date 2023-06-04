@@ -96,10 +96,7 @@ public class DatabaseService {
     }
 
     public Boolean checkNewCustomerUsername(String username) {
-        if (customersCredentialsRepository.findByUsername(username).isEmpty()) {
-            return false;
-        }
-        return true;
+        return customersCredentialsRepository.findByUsername(username).isPresent();
     }
 
     public List<OrdersEntity> findOrdersByUsername (String username){

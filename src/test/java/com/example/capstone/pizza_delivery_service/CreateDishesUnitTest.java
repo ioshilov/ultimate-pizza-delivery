@@ -5,13 +5,12 @@ import com.example.capstone.pizza_delivery_service.entity.ToppingsEntity;
 import com.example.capstone.pizza_delivery_service.model.Dishes;
 import com.example.capstone.pizza_delivery_service.repositories.FoodTypesRepository;
 import com.example.capstone.pizza_delivery_service.repositories.ToppingsRepository;
-import com.example.capstone.pizza_delivery_service.service.CustomerService;
+import com.example.capstone.pizza_delivery_service.service.ShoppingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class CreateDishesUnitTest {
     private ToppingsRepository toppingsRepository;
 
     @InjectMocks
-    private CustomerService customerService;
+    private ShoppingService shoppingService;
 
     @Test
     public void testCreateDishes() {
@@ -55,7 +54,7 @@ public class CreateDishesUnitTest {
 
         when(foodTypesRepository.findById(id)).thenReturn(Optional.of(pizzaEntity));
 
-        Dishes newDishes = customerService.createDishes(id, toppingsList);
+        Dishes newDishes = shoppingService.createDishes(id, toppingsList);
 
         assertNotNull(newDishes);
         assertEquals("Pizza Diablo", newDishes.getFoodType().getName());

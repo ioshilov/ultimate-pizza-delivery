@@ -18,15 +18,6 @@ public class AuthGroupEntity {
     @Column (name="authgroup",nullable = false)
     private String authgroup;
 
-//    @Column (name="customerscredentialsid",nullable = false,insertable=false, updatable=false)
-//    private Integer customerscredentialsid;
-//
-//
-//    @ManyToOne (optional=false, cascade=CascadeType.ALL)
-//    @JoinColumn(name = "customerscredentialsid")
-//    private CustomersCredentialsEntity customersCredentialsEntity;
-
-
     public AuthGroupEntity() {
     }
 

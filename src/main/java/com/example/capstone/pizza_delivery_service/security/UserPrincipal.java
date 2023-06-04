@@ -14,7 +14,7 @@ import java.util.*;
 public class UserPrincipal implements UserDetails {
     Logger logger = LoggerFactory.getLogger(Controller.class);
     private final CustomersCredentialsEntity user;
-    private List<AuthGroupEntity> authGroups;
+    private final List<AuthGroupEntity> authGroups;
 
     public UserPrincipal(CustomersCredentialsEntity user, List<AuthGroupEntity> authGroups){
         super();

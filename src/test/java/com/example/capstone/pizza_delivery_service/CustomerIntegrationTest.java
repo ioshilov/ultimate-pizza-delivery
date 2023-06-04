@@ -2,18 +2,15 @@ package com.example.capstone.pizza_delivery_service;
 
 import com.example.capstone.pizza_delivery_service.entity.CustomerEntity;
 import com.example.capstone.pizza_delivery_service.model.Customer;
-import com.example.capstone.pizza_delivery_service.service.CustomerService;
+import com.example.capstone.pizza_delivery_service.service.ShoppingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class CustomerIntegrationTest {
         @Autowired
-        private CustomerService customerService;
+        private ShoppingService shoppingService;
 
 
         @Test
@@ -46,7 +43,7 @@ public class CustomerIntegrationTest {
 
 
             // Test adding the contact
-            CustomerEntity newContact = customerService.registerNewCustomer(aContact);
+            CustomerEntity newContact = shoppingService.registerNewCustomer(aContact);
 
 
             // Verify the addition

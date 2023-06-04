@@ -33,8 +33,7 @@ public class WebSecurityConfig  {
                         "/error",
                         "/pay",
                         "/signup",
-                        "/error",
-                        "/delete/*").permitAll()
+                        "/error").permitAll()
                 .requestMatchers("/orders","/customers","/customers/*").hasAuthority("ADMIN")
                 .requestMatchers("/myOrders").hasAuthority("CUSTOMER")
                 .anyRequest().authenticated())

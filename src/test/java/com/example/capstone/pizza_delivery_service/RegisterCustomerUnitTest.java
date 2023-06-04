@@ -10,7 +10,7 @@ import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEn
 import com.example.capstone.pizza_delivery_service.mapper.CustomerMapper;
 import com.example.capstone.pizza_delivery_service.model.Customer;
 import com.example.capstone.pizza_delivery_service.repositories.CustomersRepository;
-import com.example.capstone.pizza_delivery_service.service.CustomerService;
+import com.example.capstone.pizza_delivery_service.service.ShoppingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +29,7 @@ public class RegisterCustomerUnitTest {
     @Mock
     private CustomersRepository customersRepository;
     @InjectMocks
-    private CustomerService customerService;
+    private ShoppingService shoppingService;
 
     @InjectMocks
     private CustomerMapper customerMapper;
@@ -56,7 +56,7 @@ public class RegisterCustomerUnitTest {
 
         when(customersRepository.save(any(CustomerEntity.class))).thenReturn(aMockEntity);
 
-        CustomerEntity newContact = customerService.registerNewCustomer(aMockContact);
+        CustomerEntity newContact = shoppingService.registerNewCustomer(aMockContact);
 
         assertNotNull(newContact);
         assertEquals("Jenny", newContact.getName());

@@ -2,8 +2,10 @@ package com.example.capstone.pizza_delivery_service.controller;
 import com.example.capstone.pizza_delivery_service.security.UserPrincipal;
 import com.example.capstone.pizza_delivery_service.entity.OrdersEntity;
 import com.example.capstone.pizza_delivery_service.model.*;
-import com.example.capstone.pizza_delivery_service.service.CustomerService;
+import com.example.capstone.pizza_delivery_service.service.ShoppingService;
 import com.example.capstone.pizza_delivery_service.service.DatabaseService;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +25,15 @@ import java.util.List;
 @RequestMapping("/")
 public class Controller {
     Logger logger = LoggerFactory.getLogger(Controller.class);
-
-
-    private final CustomerService customerService;
-
+    private final ShoppingService shoppingService;
     private final DatabaseService databaseService;
-
     private final Customer customer;
-
     private  OrderCart orderCart;
-
     private final OrderDetails orderDetails;
 
     @Autowired
-    public Controller(CustomerService customerService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
-        this.customerService = customerService;
+    public Controller(ShoppingService shoppingService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
+        this.shoppingService = shoppingService;
         this.databaseService = databaseService;
         this.customer = customer;
         this.orderCart = orderCart;
@@ -49,10 +45,8 @@ public class Controller {
 
         model.addAttribute("foodtypes", databaseService.getAllFoodTypes());
         model.addAttribute("toppingslist", databaseService.getAllToppings());
-        model.addAttribute("dishes", orderCart.getDishesList());
-        model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("customer", customer);
-        model.addAttribute("orderCart", orderCart);
+        addDefaultAttributes(model);
         logger.info("********************Your cart is full of " + orderCart.getDishesList().toString());
 
         return "index";
@@ -62,9 +56,7 @@ public class Controller {
     public String getAll(Model model) {
         List<Customer> customers = databaseService.getAllCustomers();
         model.addAttribute("customers", customers);
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("dishes", orderCart.getDishesList());
-        model.addAttribute("orderDetails", orderDetails);
+        addDefaultAttributes(model);
         return "customers-view";
     }
 
@@ -77,9 +69,7 @@ public class Controller {
 
         model.addAttribute("orders", list);
         model.addAttribute("customers", customers);
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("dishes", orderCart.getDishesList());
-        model.addAttribute("orderDetails", orderDetails);
+        addDefaultAttributes(model);
         return "myOrders-view";
     }
 
@@ -88,18 +78,14 @@ public class Controller {
         List<Customer> customerList=new ArrayList<>();
         customerList.add(databaseService.findCustomerById(id));
         model.addAttribute("customers", customerList);
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("dishes", orderCart.getDishesList());
-        model.addAttribute("orderDetails", orderDetails);
+        addDefaultAttributes(model);
         return "credentials-view";
     }
 
     @GetMapping(value = "/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", databaseService.getAllOrders());
-        model.addAttribute("orderCart", orderCart);
-        model.addAttribute("dishes", orderCart.getDishesList());
-        model.addAttribute("orderDetails", orderDetails);
+        addDefaultAttributes(model);
         return "orders-view";
     }
 
@@ -120,7 +106,7 @@ public class Controller {
             return "redirect:/";
         }
 
-        customerService.createOrder(orderCart, orderDetails, user, action);
+        shoppingService.createOrder(orderCart, orderDetails, user, action);
         orderCart = new OrderCart();
         logger.info("************* Order - " + action + "**************");
         return "redirect:/";
@@ -130,10 +116,16 @@ public class Controller {
     @PostMapping(value = "/addtocart/{ID}")
     public String addToCart(@PathVariable Integer ID,
                             @RequestParam(value = "topping", required = false) String[] toppings) {
-        Dishes dishes=customerService.createDishes(ID,toppings);
+        Dishes dishes= shoppingService.createDishes(ID,toppings);
         orderCart.addDishes(dishes);
         logger.info("added to cart " + dishes);
         return "redirect:/";
+    }
+
+    public void addDefaultAttributes(Model model){
+        model.addAttribute("orderCart", orderCart);
+        model.addAttribute("dishes", orderCart.getDishesList());
+        model.addAttribute("orderDetails", orderDetails);
     }
 
 

@@ -24,7 +24,6 @@ public class CustomerMapper {
                 customerEntity.getCustomersCredentialsEntity().getUsername(),
                 customerEntity.getCustomersCredentialsEntity().getPassword(),
                 customerEntity.getCustomersCredentialsEntity().getAuthGroupEntityList().stream().map(AuthGroupEntity::getAuthgroup).collect(Collectors.toList()));
-
     }
 
 }

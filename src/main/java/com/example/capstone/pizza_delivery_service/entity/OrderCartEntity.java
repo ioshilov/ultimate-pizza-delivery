@@ -20,14 +20,12 @@ public class OrderCartEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderCartID;
 
-
     @ManyToMany
     @JoinTable(
             name = "ordercart_dishes",
             joinColumns = @JoinColumn(name = "ordercartid"),
             inverseJoinColumns = @JoinColumn(name = "dishid"))
     private List<DishesEntity> dishesEntityList=new ArrayList<>();
-
 
     @OneToOne(mappedBy = "orderCartEntity")
     private OrderDetailsEntity orderDetailsEntity;

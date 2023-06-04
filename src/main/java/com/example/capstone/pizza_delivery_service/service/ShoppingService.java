@@ -19,32 +19,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CustomerService {
+public class ShoppingService {
 
     Logger logger = LoggerFactory.getLogger(Controller.class);
-
     private final CustomersCredentialsRepository customersCredentialsRepository;
-
     private final CustomersRepository customersRepository;
-
     private final OrdersRepository ordersRepository;
-
     private final OrderDetailsRepository orderDetailsRepository;
-
     private final OrderCartRepository orderCartRepository;
-
     private final DishesRepository dishesRepository;
-
     private final ToppingsRepository toppingsRepository;
-
     private final PaymentRepository paymentRepository;
-
     private final FoodTypesRepository foodTypesRepository;
-
     private final DatabaseService databaseService;
 
     @Autowired
-    public CustomerService(CustomersCredentialsRepository customersCredentialsRepository,
+    public ShoppingService(CustomersCredentialsRepository customersCredentialsRepository,
                            CustomersRepository customersRepository,
                            OrdersRepository ordersRepository,
                            OrderDetailsRepository orderDetailsRepository,
@@ -109,14 +99,11 @@ public class CustomerService {
             dish.getToppings().forEach(x -> {
                 ToppingsEntity toppingsEntity = toppingsEntityList.stream().filter(topping -> topping.getName().equals(x.getName())).findFirst().get();
                 dishesEntity.addToppings(toppingsEntity);
-            });
+                });
 
             dishesRepository.save(dishesEntity);
             orderCartEntity.addDishes(dishesEntity);
             logger.info("**********Service  STAGE  add dish " + dishesEntity + " to cart *****************");
-//            }
-
-
         }
         orderCartRepository.save(orderCartEntity);
         logger.info("**********Service  VICTORY *****************");
@@ -149,12 +136,10 @@ public class CustomerService {
         List<AuthGroupEntity> authGroupEntityList = new ArrayList<>();
         authGroupEntityList.add(authGroupEntity);
 
-
         credentials.setUsername(customer.getUsername());
         credentials.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
         credentials.setAuthGroupEntityList(authGroupEntityList);
         credentials.setCustomerEntity(customerEntity);
-
 
         customerEntity.setName(customer.getName());
         customerEntity.setSurname(customer.getSurname());
@@ -163,8 +148,6 @@ public class CustomerService {
         customerEntity.setDOB(customer.getDOB());
         customerEntity.setEmail(customer.getEmail());
         customerEntity.setCustomersCredentialsEntity(credentials);
-
-
 
         logger.info("********************Service. Customer to DB  " + customerEntity + "***************");
         return customersRepository.save(customerEntity);

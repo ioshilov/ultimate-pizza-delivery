@@ -14,7 +14,7 @@ import com.example.capstone.pizza_delivery_service.repositories.DishesRepository
 import com.example.capstone.pizza_delivery_service.repositories.FoodTypesRepository;
 import com.example.capstone.pizza_delivery_service.repositories.OrderCartRepository;
 import com.example.capstone.pizza_delivery_service.repositories.ToppingsRepository;
-import com.example.capstone.pizza_delivery_service.service.CustomerService;
+import com.example.capstone.pizza_delivery_service.service.ShoppingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,7 +41,7 @@ public class FillOrderCartAndSaveUnitTest {
     private OrderCartRepository orderCartRepository;
 
     @InjectMocks
-    private CustomerService customerService;
+    private ShoppingService shoppingService;
     @InjectMocks
     private ToppingsMapper toppingsMapper;
 
@@ -99,7 +99,7 @@ public class FillOrderCartAndSaveUnitTest {
 
         when(orderCartRepository.save(any())).thenReturn(orderCartEntity);
 
-        customerService.fillOrderCartWithDishesAndSave(orderCart);
+        shoppingService.fillOrderCartWithDishesAndSave(orderCart);
 
         assertNotNull(orderCartEntity);
         assertEquals("Pizza Diablo", orderCartEntity.getDishesEntityList().get(0).getFoodTypesEntity().getName());
