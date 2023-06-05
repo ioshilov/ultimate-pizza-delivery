@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.SessionScope;
 
 @org.springframework.stereotype.Controller
+@SessionScope
 @RequestMapping("/")
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -26,7 +28,7 @@ public class AuthController {
     private final OrderCart orderCart;
     private final OrderDetails orderDetails;
 
-    @Autowired
+
     public AuthController(AccountService accountService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
         this.accountService = accountService;
         this.databaseService = databaseService;

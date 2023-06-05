@@ -8,19 +8,15 @@ import com.example.capstone.pizza_delivery_service.mapper.CustomerMapper;
 import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
 import com.example.capstone.pizza_delivery_service.model.Customer;
 import com.example.capstone.pizza_delivery_service.model.FoodTypes;
-import com.example.capstone.pizza_delivery_service.model.Order;
 import com.example.capstone.pizza_delivery_service.model.Toppings;
 import com.example.capstone.pizza_delivery_service.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,46 +26,25 @@ public class DatabaseService {
 
 
     private final CustomersRepository customersRepository;
-
     private final CustomersCredentialsRepository customersCredentialsRepository;
-
     private final OrdersRepository ordersRepository;
-
-    private final OrderDetailsRepository orderDetailsRepository;
-
-    private final OrderCartRepository orderCartRepository;
-
-    private final DishesRepository dishesRepository;
-
     private final ToppingsRepository toppingsRepository;
-
-    private final PaymentRepository paymentRepository;
-
     private final FoodTypesRepository foodTypesRepository;
-
     private final FoodTypesMapper foodTypesMapper;
-
-
     private final CustomerMapper customerMapper;
 
+    @Autowired
     public DatabaseService(CustomersRepository customersRepository
             , CustomersCredentialsRepository customersCredentialsRepository
             , OrdersRepository ordersRepository
-            , OrderDetailsRepository orderDetailsRepository, OrderCartRepository orderCartRepository
-            , DishesRepository dishesRepository
             , ToppingsRepository toppingsRepository
-            , PaymentRepository paymentRepository
             , FoodTypesRepository foodTypesRepository
             , FoodTypesMapper foodTypesMapper
             , CustomerMapper customerMapper) {
         this.customersRepository = customersRepository;
         this.customersCredentialsRepository = customersCredentialsRepository;
         this.ordersRepository = ordersRepository;
-        this.orderDetailsRepository = orderDetailsRepository;
-        this.orderCartRepository = orderCartRepository;
-        this.dishesRepository = dishesRepository;
         this.toppingsRepository = toppingsRepository;
-        this.paymentRepository = paymentRepository;
         this.foodTypesRepository = foodTypesRepository;
         this.foodTypesMapper = foodTypesMapper;
         this.customerMapper = customerMapper;
@@ -78,7 +53,7 @@ public class DatabaseService {
 
     public List<Customer> getAllCustomers() {
 
-        return customersRepository.findAll().stream().map(x -> customerMapper.mapCustomerEntityToModel(x)).toList();
+        return customersRepository.findAll().stream().map(customerMapper::mapCustomerEntityToModel).toList();
     }
 
     public List<Toppings> getAllToppings() {
@@ -86,7 +61,7 @@ public class DatabaseService {
     }
 
     public List<FoodTypes> getAllFoodTypes() {
-        return foodTypesRepository.findAll().stream().map(x -> foodTypesMapper.mapFoodTypesEntityToModel(x)).toList();
+        return foodTypesRepository.findAll().stream().map(foodTypesMapper::mapFoodTypesEntityToModel).toList();
     }
 
     public Customer findCustomerById(Integer id) {
@@ -100,12 +75,13 @@ public class DatabaseService {
     public Boolean checkNewCustomerUsername(String username) {
         return customersCredentialsRepository.findByUsername(username).isPresent();
     }
+
     public Optional<CustomersCredentialsEntity> findByUsername(String username) {
         return customersCredentialsRepository.findByUsername(username);
     }
 
-    public List<OrdersEntity> findOrdersByUsername (String username){
-            return  ordersRepository.findAllBycustomerid(customersCredentialsRepository.findByUsername(username).get().getCustomerid());
+    public List<OrdersEntity> findOrdersByUsername(String username) {
+        return ordersRepository.findAllBycustomerid(customersCredentialsRepository.findByUsername(username).get().getCustomerid());
     }
 
     public void loadImages() {

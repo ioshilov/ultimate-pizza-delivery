@@ -31,7 +31,7 @@ public class Controller {
     private  OrderCart orderCart;
     private final OrderDetails orderDetails;
 
-    @Autowired
+
     public Controller(ShoppingService shoppingService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
         this.shoppingService = shoppingService;
         this.databaseService = databaseService;
