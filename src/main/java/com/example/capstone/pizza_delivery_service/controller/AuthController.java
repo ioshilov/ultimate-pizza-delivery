@@ -5,6 +5,7 @@ import com.example.capstone.pizza_delivery_service.model.Customer;
 
 import com.example.capstone.pizza_delivery_service.model.OrderCart;
 import com.example.capstone.pizza_delivery_service.model.OrderDetails;
+import com.example.capstone.pizza_delivery_service.service.AccountService;
 import com.example.capstone.pizza_delivery_service.service.ShoppingService;
 import com.example.capstone.pizza_delivery_service.service.DatabaseService;
 import jakarta.validation.Valid;
@@ -19,15 +20,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
-    private final ShoppingService shoppingService;
+    private final AccountService accountService;
     private final DatabaseService databaseService;
     private final Customer customer;
     private final OrderCart orderCart;
     private final OrderDetails orderDetails;
 
     @Autowired
-    public AuthController(ShoppingService shoppingService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
-        this.shoppingService = shoppingService;
+    public AuthController(AccountService accountService, DatabaseService databaseService, Customer customer, OrderCart orderCart, OrderDetails orderDetails) {
+        this.accountService = accountService;
         this.databaseService = databaseService;
         this.customer = customer;
         this.orderCart = orderCart;
@@ -38,7 +39,6 @@ public class AuthController {
     public String signUpNewUser(@Valid @ModelAttribute(value = "customer") Customer customer, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors() || (databaseService.checkNewCustomerUsername(customer.getUsername()))) {
             logger.error("*************Sign up form ERROR********************");
-
             if (databaseService.checkNewCustomerUsername(customer.getUsername())) {
                 model.addAttribute("errorUsername", "Username exist");
             }
@@ -47,7 +47,7 @@ public class AuthController {
             return "signup";
         }
         addDefaultAttributes(model);
-        shoppingService.registerNewCustomer(customer);
+        accountService.registerNewCustomer(customer);
         logger.info("************* New user signed up ********************");
         return "redirect:/";
     }
@@ -65,11 +65,10 @@ public class AuthController {
         return "signup";
     }
 
-    public Model addDefaultAttributes(Model model) {
+    public void addDefaultAttributes(Model model) {
         model.addAttribute("orderCart", orderCart);
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("dishes", orderCart.getDishesList());
-        return model;
     }
 
 }
