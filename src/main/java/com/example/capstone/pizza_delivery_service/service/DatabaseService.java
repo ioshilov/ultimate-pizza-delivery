@@ -1,6 +1,7 @@
 package com.example.capstone.pizza_delivery_service.service;
 
 import com.example.capstone.pizza_delivery_service.controller.Controller;
+import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEntity;
 import com.example.capstone.pizza_delivery_service.entity.FoodTypesEntity;
 import com.example.capstone.pizza_delivery_service.entity.OrdersEntity;
 import com.example.capstone.pizza_delivery_service.mapper.CustomerMapper;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DatabaseService {
@@ -97,6 +99,9 @@ public class DatabaseService {
 
     public Boolean checkNewCustomerUsername(String username) {
         return customersCredentialsRepository.findByUsername(username).isPresent();
+    }
+    public Optional<CustomersCredentialsEntity> findByUsername(String username) {
+        return customersCredentialsRepository.findByUsername(username);
     }
 
     public List<OrdersEntity> findOrdersByUsername (String username){

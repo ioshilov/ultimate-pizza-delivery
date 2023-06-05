@@ -1,20 +1,17 @@
 package com.example.capstone.pizza_delivery_service.service;
 
 import com.example.capstone.pizza_delivery_service.controller.Controller;
-import com.example.capstone.pizza_delivery_service.entity.*;
-import com.example.capstone.pizza_delivery_service.mapper.FoodTypesMapper;
-import com.example.capstone.pizza_delivery_service.mapper.ToppingsMapper;
-import com.example.capstone.pizza_delivery_service.model.*;
-import com.example.capstone.pizza_delivery_service.repositories.*;
-import com.example.capstone.pizza_delivery_service.security.UserPrincipal;
+import com.example.capstone.pizza_delivery_service.entity.AuthGroupEntity;
+import com.example.capstone.pizza_delivery_service.entity.CustomerEntity;
+import com.example.capstone.pizza_delivery_service.entity.CustomersCredentialsEntity;
+import com.example.capstone.pizza_delivery_service.model.Customer;
+import com.example.capstone.pizza_delivery_service.repositories.CustomersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +20,7 @@ public class AccountService {
 
     Logger logger = LoggerFactory.getLogger(Controller.class);
     private final CustomersRepository customersRepository;
+
 
     @Autowired
     public AccountService(CustomersRepository customersRepository) {
