@@ -23,6 +23,13 @@ pipeline {
 			}
 		}
 
+		stage('report'){
+			steps{
+				bat "mvn clean org.jacoco:jacoco-maven-plugins:prepare-agent package"
+				jacoco()
+			}
+		}
+
 
 	}
 }
