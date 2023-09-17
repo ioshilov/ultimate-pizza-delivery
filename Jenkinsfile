@@ -25,7 +25,7 @@ pipeline {
 
 		stage('report'){
 			steps{
-				bat "mvn clean org.jacoco:jacoco-maven-plugins:prepare-agent package"
+				bat "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package"
 				jacoco()
 			}
 		}
