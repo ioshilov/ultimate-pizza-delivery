@@ -13,8 +13,9 @@ pipeline {
 
 
   stage('SonarQube analysis') {
+	  steps {
     withSonarQubeEnv('sonar') { // You can override the credential to be used
-	    steps {
+	    
       bat "mvn clean package sonar:sonar"
     }
   }
