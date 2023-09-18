@@ -11,6 +11,13 @@ pipeline {
 
 	stages {
 
+
+  stage('SonarQube analysis') {
+    withSonarQubeEnv(credentialsId: 'squ_3a4367353514787bd93240aed7592f232fab1373', installationName: 'sonar') { // You can override the credential to be used
+      bat "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar"
+    }
+  }
+
 		stage('Build'){
 			steps {
 				bat "mvn clean install -DskipTests"
