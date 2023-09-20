@@ -54,7 +54,7 @@ pipeline {
 
 		stage('deploy'){
 			steps{
-				bat "mvn package tomcat7:deploy"
+				bat "mvn tomcat7:deploy"
 			}
 		}
 
