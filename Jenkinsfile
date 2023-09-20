@@ -12,14 +12,7 @@ pipeline {
 	stages {
 
 
-  stage('SonarQube analysis') {
-	  steps {
-    withSonarQubeEnv('sonar') { // You can override the credential to be used
-	    
-      bat "mvn clean package sonar:sonar"
-    }
-  }
-  }
+ 		  
 
 		stage('Build'){
 			steps {
@@ -36,8 +29,32 @@ pipeline {
 
 		stage('report'){
 			steps{
-				bat "mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package"
+				bat "mvn org.jacoco:jacoco-maven-plugin:prepare-agent"
 				jacoco()
+			}
+		}
+
+		stage('SonarQube analysis') {
+	  		steps {
+    				withSonarQubeEnv('sonar') {	    
+     							 bat "mvn sonar:sonar"
+    							}
+   				}
+  		}
+
+		stage("Quality Gate") {
+            		steps {
+                		timeout(time: 1, unit: 'HOURS') {
+                    						// Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    						// true = set pipeline to UNSTABLE, false = don't
+                    						waitForQualityGate abortPipeline: true
+                						}
+            			}
+        	}
+
+		stage('deploy'){
+			steps{
+				bat "mvn tomcat7:deploy"
 			}
 		}
 
