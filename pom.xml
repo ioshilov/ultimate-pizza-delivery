@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Pizza delivery service</name>
 	<description>Capstone project for pizza delivery service</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -92,15 +93,41 @@
 			<version>0.8.10</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>3.10.0.2594</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 
 
 	</dependencies>
 
 	<build>
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8082/manager/text</url>
+					<username>war-deployer</username>
+					<password>maven-tomcat-plugin</password>
+					<path>/pizza</path>
+				</configuration>
 			</plugin>
 
 		</plugins>
@@ -141,5 +168,7 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
+
+
 
 </project>
